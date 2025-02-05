@@ -1,0 +1,9 @@
+/* custom_admin.css */
+
+
+/* Ensure the graph is responsive */
+
+.chrt_flex {
+    width: 100%;
+    height: auto;
+}

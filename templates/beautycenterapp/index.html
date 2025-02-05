@@ -1,0 +1,1176 @@
+{% extends "base.html" %} {% load static %} {% block maincontents %} {% load custom_filters %}
+
+
+
+
+
+
+
+
+<!-- Modal -->
+{% comment %}
+<div class="modal fade custom-modal" id="onloadModal" tabindex="-1" aria-labelledby="onloadModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-body">
+                <div class="deal" style="background-image: url('{% for mb in main_banner %}{{mb.image.url}}{% endfor %}')">
+                    <div class="deal-top">
+                        <h6 class="mb-10 text-brand-2">Deal of the Day</h6>
+                    </div>
+                    <div class="deal-content detail-info">
+                        <h4 class="product-title"><a href="{% url 'market' %}" class="text-heading">{% for mb in main_banner %}
+                            {{mb.title|truncatechars:50}}
+                        {% endfor %}</a></h4>
+                        <div class="clearfix product-price-cover">
+                            <div class="product-price primary-color float-left">
+                                <span class="current-price text-brand">₹ {% for mb in main_banner %}
+                                    {{mb.discount}}
+                                {% endfor %}</span>
+                                <span>
+                                            <span class="save-price font-md color3 ml-15">{% for mb in main_banner %}   
+                                                {{mb.discount_percentage}}
+                                            {% endfor %} % Off</span>
+                                <span class="old-price font-md ml-15">₹ {% for mb in main_banner %}     
+                                  {{mb.price}}
+                                {% endfor %}</span>
+                                </span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="deal-bottom">
+                        <p class="mb-20">Hurry Up! Offer End In:</p>
+                        <div class="deals-countdown pl-5" data-countdown="2025/03/25 00:00:00">
+                            <span class="countdown-section"><span class="countdown-amount hover-up">03</span><span class="countdown-period"> days </span></span><span class="countdown-section"><span class="countdown-amount hover-up">02</span>
+                            <span class="countdown-period"> hours </span>
+                            </span><span class="countdown-section"><span class="countdown-amount hover-up">43</span><span class="countdown-period"> mins </span></span><span class="countdown-section"><span class="countdown-amount hover-up">29</span>
+                            <span class="countdown-period"> sec </span>
+                            </span>
+                        </div>
+                        <div class="product-detail-rating">
+                            <div class="product-rate-cover text-end">
+                                <div class="product-rate d-inline-block">
+                                    <div class="product-rating" style="width: 90%"></div>
+                                </div>
+                                <span class="font-small ml-5 text-muted"> (32 rates)</span>
+                            </div>
+                        </div>
+                        {% for mb in main_banner %}
+                        <a href="{% url 'itemDetail' mb.id %}" class="btn hover-up">Shop Now <i class="fi-rs-arrow-right"></i></a> {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endcomment %}
+
+
+<!------------Start Body Area------------------->
+<main class="main">
+    <section class="home-slider position-relative mb-30">
+        <div class="container">
+            <div class="home-slide-cover mt-30">
+                <div class="hero-slider-1 style-4 dot-style-1 dot-style-1-position-1">
+                    <div class="single-hero-slider single-animation-wrap" style="background-image: url({% static 'assets/imgs/slider/slider-1.png' %})">
+                        <div class="slider-content">
+                            <h1 class="display-2 mb-40">
+                                Don’t miss amazing<br /> grocery deals
+                            </h1>
+                            <p class="mb-65">Sign up for the daily newsletter</p>
+                            <form class="form-subcriber d-flex">
+                                <input type="email" placeholder="Your emaill address" />
+                                <button class="btn" type="submit">Subscribe</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="single-hero-slider single-animation-wrap" style="background-image: url({% static 'assets/imgs/slider/slider-2.png' %})">
+                        <div class="slider-content">
+                            <h1 class="display-2 mb-40">
+                                Fresh Vegetables<br /> Big discount
+                            </h1>
+                            <p class="mb-65">Save up to 50% off on your first order</p>
+                            <form class="form-subcriber d-flex">
+                                <input type="email" placeholder="Your emaill address" />
+                                <button class="btn" type="submit">Subscribe</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-arrow hero-slider-1-arrow"></div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+    <!--End hero slider-->
+    <section class="popular-categories section-padding" id="FeaturedCategories">
+        <div class="container wow animate__animated animate__fadeIn">
+            <div class="section-title">
+                <div class="title">
+                    <h3>Featured Categories</h3>
+                    <ul class="list-inline nav nav-tabs links">
+                        {% for category in categories %}
+                        <li class="list-inline-item nav-item"><a class="nav-link" href="{% url 'category_detail' category.id %}">{{ category.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="slider-arrow slider-arrow-2 flex-right carausel-10-columns-arrow" id="carausel-10-columns-arrows"></div>
+            </div>
+
+
+            <div class="carausel-10-columns-cover position-relative">
+                <div class="carausel-10-columns" id="carausel-10-columns">
+                    {% for category in categories %}
+                    <div class="card-2 bg-9 wow animate__animated animate__fadeInUp" data-wow-delay=".1s">
+                        <figure class="img-hover-scale overflow-hidden">
+                            <a href="{% url 'category_detail' category.id %}"><img src="{{ category.image.url }}" alt="" /></a>
+                        </figure>
+                        <h6><a href="{% url 'category_detail' category.id %}">{{ category.title }}</a></h6>
+                        <span>{{category.product_count}} items</span>
+                    </div> {% endfor %}
+                </div>
+            </div>
+
+
+
+        </div>
+    </section>
+    <!--End category slider-->
+    <section class="banners mb-25">
+        <div class="container">
+            <div class="row">
+                {% for ad in ads %}
+                <div class="col-lg-4 col-md-6">
+                    <div class="banner-img wow animate__animated animate__fadeInUp" data-wow-delay="0">
+                        <img src="{{ad.image.url}}" alt="" />
+                        <div class="banner-text">
+                            <h4>
+                                {{ ad.title|linebreak_every_n_words:2|safe }}
+                            </h4>
+                            <a href="{% url 'market'  %}" class="btn btn-xs">Shop Now <i class="fi-rs-arrow-small-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!--End banners-->
+    <section class="product-tabs section-padding position-relative">
+        <div class="container">
+            <div class="section-title style-2 wow animate__animated animate__fadeIn">
+                <h3>Popular Products</h3>
+                <ul class="nav nav-tabs links" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="nav-tab-one" data-bs-toggle="tab" data-bs-target="#tab-all" type="button" role="tab" hx-get="{% url 'category_pdo' %}" hx-target="#products-rows" hx-swap="innerHTML">All</button>
+                    </li>
+
+                    {% for category in categories %}
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="nav-tab-{{ forloop.counter }}" data-bs-toggle="tab" data-bs-target="#tab-{{ category.id }}" type="button" role="tab" hx-get="{% url 'category_pdo' category.id %}" hx-target="#products-rows" hx-swap="innerHTML">{{ category.title }}</button>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="tab-all" role="tabpanel" aria-labelledby="nav-tab-one">
+                        <!-- Content for all products -->
+                    </div>
+
+                    {% for category in categories %}
+                    <div class="tab-pane fade" id="tab-{{ category.id }}" role="tabpanel" aria-labelledby="nav-tab-{{ forloop.counter }}">
+                        <!-- Content for category: {{ category.title }} -->
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+            <!--End nav-tabs-->
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
+                    <div class="row product-grid-4" id="products-rows">
+                        <!-- product card start from here -->
+                        {% for pp in p_prodcuts %}
+                        <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                            <div class="product-cart-wrap mb-30 wow animate__animated animate__fadeIn" data-wow-delay=".1s">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a href="{% url 'itemDetail' pp.id %}">
+                                            <img class="default-img" src="{{ pp.image.url }}" alt="" />
+                                            <img class="hover-img" src="{{ pp.hover_img.url }}" alt="" />
+                                        </a>
+                                    </div>
+                                    <div class="product-action-1">
+                                        <a aria-label="Add To Wishlist" class="action-btn" href="{% url 'add_to_wishlist' pp.id %}"><i class="fi-rs-heart"></i></a>
+                                        <a aria-label="Compare" class="action-btn" href="#"><i class="fi-rs-shuffle"></i></a>
+                                        <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                                    </div>
+                                    <div class="product-badges product-badges-position product-badges-mrg">
+                                        <span class="hot">{{pp.status}}</span>
+                                    </div>
+                                </div>
+                                <div class="product-content-wrap">
+                                    <div class="product-category">
+                                        <a href="#">{{pp.category}}</a>
+                                    </div>
+                                    <h2><a href="{% url 'itemDetail' pp.id %}">{{pp.title}}</a></h2>
+                                    <div class="product-rate-cover">
+                                        <div class="product-rate d-inline-block">
+                                            <div class="product-rating" style="width: {{pp.rating_value}}%"></div>
+                                        </div>
+                                        <span class="font-small ml-5 text-muted"> ({{pp.rating}})</span>
+                                    </div>
+                                    <div>
+                                        <span class="font-small text-muted">By <a href="#">{{pp.vendor}}</a></span>
+                                    </div>
+                                    <div class="product-card-bottom">
+                                        <div class="product-price">
+                                            <span>₹{{ pp.discount }}</span>
+                                            <span class="old-price">₹{% if pp.updated_price != pp.discount %}{{ pp.updated_price }}{% else %}{{pp.price}}{% endif %}</span>
+                                        </div>
+                                        <div class="add-cart">
+                                            <a class="add" href="{% url 'add_to_cart' pp.id %}"><i class="fi-rs-shopping-cart mr-5"></i>Add </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <a class="btn btn-outline-info" style="display: block;margin:auto;width:200px;border-radius:20px;border:none;" href="{% url 'market' %}"><i class="fa fi-rs-angle-double-small-right mx-2"></i>View More</a>
+                        <!--end product card-->
+                        <!-- <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                            <div class="product-cart-wrap mb-30 wow animate__animated animate__fadeIn" data-wow-delay=".2s">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a href="#">
+                                            <img class="default-img" src="{% static 'assets/imgs/shop/product-2-1.jpg' %}" alt="" />
+                                            <img class="hover-img" src="{% static 'assets/imgs/shop/product-2-2.jpg' %}" alt="" />
+                                        </a>
+                    </div>
+                    <div class="product-action-1">
+                        <a aria-label="Add To Wishlist" class="action-btn" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                        <a aria-label="Compare" class="action-btn" href="#"><i class="fi-rs-shuffle"></i></a>
+                        <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                    </div>
+                    <div class="product-badges product-badges-position product-badges-mrg">
+                        <span class="sale">Sale</span>
+                    </div>
+                </div>
+                <div class="product-content-wrap">
+                    <div class="product-category">
+                        <a href="#">Hodo Foods</a>
+                    </div>
+                    <h2><a href="#">All Natural Italian-Style Chicken Meatballs</a></h2>
+                    <div class="product-rate-cover">
+                        <div class="product-rate d-inline-block">
+                            <div class="product-rating" style="width: 80%"></div>
+                        </div>
+                        <span class="font-small ml-5 text-muted"> (3.5)</span>
+                    </div>
+                    <div>
+                        <span class="font-small text-muted">By <a href="#">Stouffer</a></span>
+                    </div>
+                    <div class="product-card-bottom">
+                        <div class="product-price">
+                            <span>₹52.85</span>
+                            <span class="old-price">₹55.8</span>
+                        </div>
+                        <div class="add-cart">
+                            <a class="add" href="shop-cart.html"><i class="fi-rs-shopping-cart mr-5"></i>Add </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+                        <!--end product card-->
+
+                    </div>
+                    <!--End product-grid-4-->
+                </div>
+                <!--En tab one-->
+                <div class="tab-pane fade" id="tab-two" role="tabpanel" aria-labelledby="tab-two">
+                    <div class="row product-grid-4">
+                        {% for mdk in milks_dairies %}
+                        <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                            <div class="product-cart-wrap mb-30">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a href="{% url 'itemDetail' mdk.id %}">
+                                            <img class="default-img" src="{{mdk.image.url}}" alt="{{mdk.title}}" />
+                                            <img class="hover-img" src="{{mdk.hover_img.url}}" alt="" />
+                                        </a>
+                                    </div>
+                                    <div class="product-action-1">
+                                        <a aria-label="Add To Wishlist" class="action-btn" href="{% url 'add_to_wishlist' mdk.id %}"><i class="fi-rs-heart"></i></a>
+                                        <a aria-label="Compare" class="action-btn" href="#"><i class="fi-rs-shuffle"></i></a>
+                                        <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                                    </div>
+                                    <div class="product-badges product-badges-position product-badges-mrg">
+                                        <span class="hot">{{mdk.status}}</span>
+                                    </div>
+                                </div>
+                                <div class="product-content-wrap">
+                                    <div class="product-category">
+                                        <a href="#">{{mdk.category}}</a>
+                                    </div>
+                                    <h2><a href="#">{{mdk.title}}</a></h2>
+                                    <div class="product-rate-cover">
+                                        <div class="product-rate d-inline-block">
+                                            <div class="product-rating" style="width: {{mdk.rating_value}}%"></div>
+                                        </div>
+                                        <span class="font-small ml-5 text-muted"> ({{mdk.rating}})</span>
+                                    </div>
+                                    <div>
+                                        <span class="font-small text-muted">By <a href="#">{{mdk.vendor}}</a></span>
+                                    </div>
+                                    <div class="product-card-bottom">
+                                        <div class="product-price">
+                                            <span>₹{{ mdk.discount }}</span>
+                                            <span class="old-price">₹{% if mdk.updated_price != mdk.discount %}{{ mdk.updated_price }}{% else %}{{mdk.price}}{% endif %}</span>
+                                        </div>
+                                        <div class="add-cart">
+                                            <a class="add" href="{% url 'add_to_cart' mdk.id %}"><i class="fi-rs-shopping-cart mr-5"></i>Add </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <!--end product card-->
+
+                    </div>
+                    <!--End product-grid-4-->
+                </div>
+                <!--En tab two-->
+                <div class="tab-pane fade" id="tab-three" role="tabpanel" aria-labelledby="tab-three">
+                    <div class="row product-grid-4">
+                        {% for mdk in coffes_tea %}
+                        <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                            <div class="product-cart-wrap mb-30">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a href="{% url 'itemDetail' mdk.id %}">
+                                            <img class="default-img" src="{{mdk.image.url}}" alt="{{mdk.title}}" />
+                                            <img class="hover-img" src="{{mdk.hover_img.url}}" alt="" />
+                                        </a>
+                                    </div>
+                                    <div class="product-action-1">
+                                        <a aria-label="Add To Wishlist" class="action-btn" href="{% url 'add_to_wishlist' mdk.id %}"><i class="fi-rs-heart"></i></a>
+                                        <a aria-label="Compare" class="action-btn" href="#"><i class="fi-rs-shuffle"></i></a>
+                                        <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                                    </div>
+                                    <div class="product-badges product-badges-position product-badges-mrg">
+                                        <span class="hot">{{mdk.status}}</span>
+                                    </div>
+                                </div>
+                                <div class="product-content-wrap">
+                                    <div class="product-category">
+                                        <a href="#">{{mdk.category}}</a>
+                                    </div>
+                                    <h2><a href="#">{{mdk.title}}</a></h2>
+                                    <div class="product-rate-cover">
+                                        <div class="product-rate d-inline-block">
+                                            <div class="product-rating" style="width: {{mdk.rating_value}}%"></div>
+                                        </div>
+                                        <span class="font-small ml-5 text-muted"> ({{mdk.rating}})</span>
+                                    </div>
+                                    <div>
+                                        <span class="font-small text-muted">By <a href="#">{{mdk.vendor}}</a></span>
+                                    </div>
+                                    <div class="product-card-bottom">
+                                        <div class="product-price">
+                                            <span>₹{{ mdk.discount }}</span>
+                                            <span class="old-price">₹{% if mdk.updated_price != mdk.discount %}{{ mdk.updated_price }}{% else %}{{mdk.price}}{% endif %}</span>
+                                        </div>
+                                        <div class="add-cart">
+                                            <a class="add" href="{% url 'add_to_cart' mdk.id %}"><i class="fi-rs-shopping-cart mr-5"></i>Add </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <!--end product card-->
+
+                    </div>
+                    <!--End product-grid-4-->
+                </div>
+                <!--En tab three-->
+                <div class="tab-pane fade" id="tab-four" role="tabpanel" aria-labelledby="tab-four">
+                    <div class="row product-grid-4">
+                        {% for mdk in pet_foods %}
+                        <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                            <div class="product-cart-wrap mb-30">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a href="{% url 'itemDetail' mdk.id %}">
+                                            <img class="default-img" src="{{mdk.image.url}}" alt="{{mdk.title}}" />
+                                            <img class="hover-img" src="{{mdk.hover_img.url}}" alt="" />
+                                        </a>
+                                    </div>
+                                    <div class="product-action-1">
+                                        <a aria-label="Add To Wishlist" class="action-btn" href="{% url 'add_to_wishlist' mdk.id %}"><i class="fi-rs-heart"></i></a>
+                                        <a aria-label="Compare" class="action-btn" href="#"><i class="fi-rs-shuffle"></i></a>
+                                        <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                                    </div>
+                                    <div class="product-badges product-badges-position product-badges-mrg">
+                                        <span class="hot">{{mdk.status}}</span>
+                                    </div>
+                                </div>
+                                <div class="product-content-wrap">
+                                    <div class="product-category">
+                                        <a href="#">{{mdk.category}}</a>
+                                    </div>
+                                    <h2><a href="#">{{mdk.title}}</a></h2>
+                                    <div class="product-rate-cover">
+                                        <div class="product-rate d-inline-block">
+                                            <div class="product-rating" style="width: {{mdk.rating_value}}%"></div>
+                                        </div>
+                                        <span class="font-small ml-5 text-muted"> ({{mdk.rating}})</span>
+                                    </div>
+                                    <div>
+                                        <span class="font-small text-muted">By <a href="#">{{mdk.vendor}}</a></span>
+                                    </div>
+                                    <div class="product-card-bottom">
+                                        <div class="product-price">
+                                            <span>₹{{ mdk.discount }}</span>
+                                            <span class="old-price">₹{% if mdk.updated_price != mdk.discount %}{{ mdk.updated_price }}{% else %}{{mdk.price}}{% endif %}</span>
+                                        </div>
+                                        <div class="add-cart">
+                                            <a class="add" href="{% url 'add_to_cart' mdk.id %}"><i class="fi-rs-shopping-cart mr-5"></i>Add </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <!--End product-grid-4-->
+                </div>
+                <!--En tab four-->
+                <div class="tab-pane fade" id="tab-five" role="tabpanel" aria-labelledby="tab-five">
+                    <div class="row product-grid-4">
+                        {% for mdk in meats %}
+                        <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                            <div class="product-cart-wrap mb-30">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a href="{% url 'itemDetail' mdk.id %}">
+                                            <img class="default-img" src="{{mdk.image.url}}" alt="{{mdk.title}}" />
+                                            <img class="hover-img" src="{{mdk.hover_img.url}}" alt="" />
+                                        </a>
+                                    </div>
+                                    <div class="product-action-1">
+                                        <a aria-label="Add To Wishlist" class="action-btn" href="{% url 'add_to_wishlist' mdk.id %}"><i class="fi-rs-heart"></i></a>
+                                        <a aria-label="Compare" class="action-btn" href="#"><i class="fi-rs-shuffle"></i></a>
+                                        <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                                    </div>
+                                    <div class="product-badges product-badges-position product-badges-mrg">
+                                        <span class="hot">{{mdk.status}}</span>
+                                    </div>
+                                </div>
+                                <div class="product-content-wrap">
+                                    <div class="product-category">
+                                        <a href="#">{{mdk.category}}</a>
+                                    </div>
+                                    <h2><a href="#">{{mdk.title}}</a></h2>
+                                    <div class="product-rate-cover">
+                                        <div class="product-rate d-inline-block">
+                                            <div class="product-rating" style="width: {{mdk.rating_value}}%"></div>
+                                        </div>
+                                        <span class="font-small ml-5 text-muted"> ({{mdk.rating}})</span>
+                                    </div>
+                                    <div>
+                                        <span class="font-small text-muted">By <a href="#">{{mdk.vendor}}</a></span>
+                                    </div>
+                                    <div class="product-card-bottom">
+                                        <div class="product-price">
+                                            <span>₹{{ mdk.discount }}</span>
+                                            <span class="old-price">₹{% if mdk.updated_price != mdk.discount %}{{ mdk.updated_price }}{% else %}{{mdk.price}}{% endif %}</span>
+                                        </div>
+                                        <div class="add-cart">
+                                            <a class="add" href="{% url 'add_to_cart' mdk.id %}"><i class="fi-rs-shopping-cart mr-5"></i>Add </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <!--End product-grid-4-->
+                </div>
+                <!--En tab five-->
+                <div class="tab-pane fade" id="tab-six" role="tabpanel" aria-labelledby="tab-six">
+                    <div class="row product-grid-4">
+                        {% for mdk in vegetables %}
+                        <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                            <div class="product-cart-wrap mb-30">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a href="{% url 'itemDetail' mdk.id %}">
+                                            <img class="default-img" src="{{mdk.image.url}}" alt="{{mdk.title}}" />
+                                            <img class="hover-img" src="{{mdk.hover_img.url}}" alt="" />
+                                        </a>
+                                    </div>
+                                    <div class="product-action-1">
+                                        <a aria-label="Add To Wishlist" class="action-btn" href="{% url 'add_to_wishlist' mdk.id %}"><i class="fi-rs-heart"></i></a>
+                                        <a aria-label="Compare" class="action-btn" href="#"><i class="fi-rs-shuffle"></i></a>
+                                        <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                                    </div>
+                                    <div class="product-badges product-badges-position product-badges-mrg">
+                                        <span class="hot">{{mdk.status}}</span>
+                                    </div>
+                                </div>
+                                <div class="product-content-wrap">
+                                    <div class="product-category">
+                                        <a href="#">{{mdk.category}}</a>
+                                    </div>
+                                    <h2><a href="#">{{mdk.title}}</a></h2>
+                                    <div class="product-rate-cover">
+                                        <div class="product-rate d-inline-block">
+                                            <div class="product-rating" style="width: {{mdk.rating_value}}%"></div>
+                                        </div>
+                                        <span class="font-small ml-5 text-muted"> ({{mdk.rating}})</span>
+                                    </div>
+                                    <div>
+                                        <span class="font-small text-muted">By <a href="#">{{mdk.vendor}}</a></span>
+                                    </div>
+                                    <div class="product-card-bottom">
+                                        <div class="product-price">
+                                            <span>₹{{ mdk.discount }}</span>
+                                            <span class="old-price">₹{% if mdk.updated_price != mdk.discount %}{{ mdk.updated_price }}{% else %}{{mdk.price}}{% endif %}</span>
+                                        </div>
+                                        <div class="add-cart">
+                                            <a class="add" href="{% url 'add_to_cart' mdk.id %}"><i class="fi-rs-shopping-cart mr-5"></i>Add </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <!--End product-grid-4-->
+                </div>
+                <!--En tab six-->
+                <div class="tab-pane fade" id="tab-seven" role="tabpanel" aria-labelledby="tab-seven">
+                    <div class="row product-grid-4">
+                        {% for mdk in Fruits %}
+                        <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                            <div class="product-cart-wrap mb-30">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a href="{% url 'itemDetail' mdk.id %}">
+                                            <img class="default-img" src="{{mdk.image.url}}" alt="{{mdk.title}}" />
+                                            <img class="hover-img" src="{{mdk.hover_img.url}}" alt="" />
+                                        </a>
+                                    </div>
+                                    <div class="product-action-1">
+                                        <a aria-label="Add To Wishlist" class="action-btn" href="{% url 'add_to_wishlist' mdk.id %}"><i class="fi-rs-heart"></i></a>
+                                        <a aria-label="Compare" class="action-btn" href="#"><i class="fi-rs-shuffle"></i></a>
+                                        <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                                    </div>
+                                    <div class="product-badges product-badges-position product-badges-mrg">
+                                        <span class="hot">{{mdk.status}}</span>
+                                    </div>
+                                </div>
+                                <div class="product-content-wrap">
+                                    <div class="product-category">
+                                        <a href="#">{{mdk.category}}</a>
+                                    </div>
+                                    <h2><a href="#">{{mdk.title}}</a></h2>
+                                    <div class="product-rate-cover">
+                                        <div class="product-rate d-inline-block">
+                                            <div class="product-rating" style="width: {{mdk.rating_value}}%"></div>
+                                        </div>
+                                        <span class="font-small ml-5 text-muted"> ({{mdk.rating}})</span>
+                                    </div>
+                                    <div>
+                                        <span class="font-small text-muted">By <a href="#">{{mdk.vendor}}</a></span>
+                                    </div>
+                                    <div class="product-card-bottom">
+                                        <div class="product-price">
+                                            <span>₹{{ mdk.discount }}</span>
+                                            <span class="old-price">₹{% if mdk.updated_price != mdk.discount %}{{ mdk.updated_price }}{% else %}{{mdk.price}}{% endif %}</span>
+                                        </div>
+                                        <div class="add-cart">
+                                            <a class="add" href="{% url 'add_to_cart' mdk.id %}"><i class="fi-rs-shopping-cart mr-5"></i>Add </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <!--End product-grid-4-->
+                </div>
+                <!--En tab seven-->
+            </div>
+            <!--End tab-content-->
+        </div>
+    </section>
+    <!--Products Tabs-->
+    <section class="section-padding pb-5">
+        <div class="container">
+            <div class="section-title wow animate__animated animate__fadeIn">
+                <h3 class="">Daily Best Sells</h3>
+                <ul class="nav nav-tabs links" id="myTab-2" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="nav-tab-one-1" data-bs-toggle="tab" data-bs-target="#tab-one-1" type="button" role="tab" aria-controls="tab-one" aria-selected="true">Featured</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="nav-tab-two-1" data-bs-toggle="tab" data-bs-target="#tab-two-1" type="button" role="tab" aria-controls="tab-two" aria-selected="false">Popular</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="nav-tab-three-1" data-bs-toggle="tab" data-bs-target="#tab-three-1" type="button" role="tab" aria-controls="tab-three" aria-selected="false">New added</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 d-none d-lg-flex wow animate__animated animate__fadeIn">
+                    <div class="banner-img style-2 ">
+                        <div class="banner-text">
+                            <h2 class="mb-100">Bring nature into your home</h2>
+                            <a href="#" class="btn btn-xs">Shop Now <i class="fi-rs-arrow-small-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-12 wow animate__animated animate__fadeIn" data-wow-delay=".4s">
+                    <div class="tab-content " id="myTabContent-1">
+                        <div class="tab-pane fade show active" id="tab-one-1" role="tabpanel" aria-labelledby="tab-one-1">
+                            <div class="carausel-4-columns-cover arrow-center position-relative">
+                                <div class="slider-arrow slider-arrow-2 carausel-4-columns-arrow" id="carausel-4-columns-arrows"></div>
+                                <div class="carausel-4-columns carausel-arrow-center" id="carausel-4-columns">
+                                    {% for rp in rp_prodcuts %}
+                                    <div class="product-cart-wrap">
+                                        <div class="product-img-action-wrap">
+                                            <div class="product-img product-img-zoom">
+                                                <a href="{% url 'itemDetail' rp.id %}">
+                                                    <img class="default-img" src="{{rp.image.url}}" alt="" />
+                                                    <img class="hover-img" src="{{rp.hover_img.url}}" alt="" />
+                                                </a>
+                                            </div>
+                                            <div class="product-action-1">
+                                                <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i class="fi-rs-eye"></i></a>
+                                                <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="{% url 'add_to_wishlist' rp.id %}"><i class="fi-rs-heart"></i></a>
+                                                <a aria-label="Compare" class="action-btn small hover-up" href="#"><i class="fi-rs-shuffle"></i></a>
+                                            </div>
+                                            <div class="product-badges product-badges-position product-badges-mrg">
+                                                <span class="hot">{{rp.status}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="product-content-wrap">
+                                            <div class="product-category">
+                                                <a href="#">{{rp.category}}</a>
+                                            </div>
+                                            <h2><a href="{% url 'itemDetail' rp.id %}">{{rp.title|truncatechars:50}}</a></h2>
+                                            <div class="product-rate d-inline-block">
+                                                <div class="product-rating" style="width: {{rp.rating_value}}%"></div>
+                                            </div>
+                                            <div class="product-price mt-10">
+                                                <span>₹{{rp.discount}} </span>
+                                                <span class="old-price">₹{% if mdk.updated_price != mdk.discount %}{{ mdk.updated_price }}{% else %}{{mdk.price}}{% endif %}</span>
+                                            </div>
+                                            <div class="sold mt-15 mb-15">
+                                                <div class="progress mb-5">
+                                                    <div class="progress-bar" role="progressbar" style="width: {{rp.rating_value}}%" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <span class="font-xs text-heading"> Sold: 90/120</span>
+                                            </div>
+                                            <a href="{% url 'add_to_cart' rp.id %}" class="btn w-100 hover-up"><i class="fi-rs-shopping-cart mr-5"></i>Add To Cart</a>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    <!--End product Wrap-->
+                                    <!-- <div class="product-cart-wrap">
+                                        <div class="product-img-action-wrap">
+                                            <div class="product-img product-img-zoom">
+                                                <a href="#">
+                                                    <img class="default-img" src="{% static 'assets/imgs/shop/product-5-1.jpg' %}" alt="" />
+                                                    <img class="hover-img" src="{% static 'assets/imgs/shop/product-5-2.jpg' %}" alt="" />
+                                                </a>
+                                            </div>
+                                            <div class="product-action-1">
+                                                <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i class="fi-rs-eye"></i></a>
+                                                <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                <a aria-label="Compare" class="action-btn small hover-up" href="#"><i class="fi-rs-shuffle"></i></a>
+                                            </div>
+                                            <div class="product-badges product-badges-position product-badges-mrg">
+                                                <span class="new">Save 35%</span>
+                                            </div>
+                                        </div>
+                                        <div class="product-content-wrap">
+                                            <div class="product-category">
+                                                <a href="#">Hodo Foods</a>
+                                            </div>
+                                            <h2><a href="#">All Natural Italian-Style Chicken Meatballs</a></h2>
+                                            <div class="product-rate d-inline-block">
+                                                <div class="product-rating" style="width: 80%"></div>
+                                            </div>
+                                            <div class="product-price mt-10">
+                                                <span>₹238.85 </span>
+                                                <span class="old-price">₹245.8</span>
+                                            </div>
+                                            <div class="sold mt-15 mb-15">
+                                                <div class="progress mb-5">
+                                                    <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <span class="font-xs text-heading"> Sold: 90/120</span>
+                                            </div>
+                                            <a href="shop-cart.html" class="btn w-100 hover-up"><i class="fi-rs-shopping-cart mr-5"></i>Add To Cart</a>
+                                        </div>
+                                    </div> -->
+                                    <!--End product Wrap-->
+                                </div>
+                            </div>
+                        </div>
+                        <!--End tab-pane-->
+                        <div class="tab-pane fade" id="tab-two-1" role="tabpanel" aria-labelledby="tab-two-1">
+                            <div class="carausel-4-columns-cover arrow-center position-relative">
+                                <div class="slider-arrow slider-arrow-2 carausel-4-columns-arrow" id="carausel-4-columns-2-arrows"></div>
+                                <div class="carausel-4-columns carausel-arrow-center" id="carausel-4-columns-2">
+                                    {% for pp in p_prodcuts %}
+                                    <div class="product-cart-wrap">
+                                        <div class="product-img-action-wrap">
+                                            <div class="product-img product-img-zoom">
+                                                <a href="#">
+                                                    <img class="default-img" src="{{pp.image.url}}" alt="" />
+                                                    <img class="hover-img" src="{{pp.hover_img.url}}" alt="" />
+                                                </a>
+                                            </div>
+                                            <div class="product-action-1">
+                                                <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i class="fi-rs-eye"></i></a>
+                                                <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                <a aria-label="Compare" class="action-btn small hover-up" href="#"><i class="fi-rs-shuffle"></i></a>
+                                            </div>
+                                            <div class="product-badges product-badges-position product-badges-mrg">
+                                                <span class="hot">{{pp.status}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="product-content-wrap">
+                                            <div class="product-category">
+                                                <a href="#">{{pp.category}}</a>
+                                            </div>
+                                            <h2><a href="#">{{pp.title}}</a></h2>
+                                            <div class="product-rate d-inline-block">
+                                                <div class="product-rating" style="width: {{pp.rating_value}}%"></div>
+                                            </div>
+                                            <div class="product-price mt-10">
+                                                <span>₹{{pp.discount}} </span>
+                                                <span class="old-price">₹{% if pp.updated_price != pp.discount %}{{ pp.updated_price }}{% else %}{{pp.price}}{% endif %}</span>
+                                            </div>
+                                            <div class="sold mt-15 mb-15">
+                                                <div class="progress mb-5">
+                                                    <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <span class="font-xs text-heading"> Sold: 90/120</span>
+                                            </div>
+                                            <a href="{% url 'add_to_cart' pp.id %}" class="btn w-100 hover-up"><i class="fi-rs-shopping-cart mr-5"></i>Add To Cart</a>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    <!--End product Wrap-->
+                                    <!-- <div class="product-cart-wrap">
+                                        <div class="product-img-action-wrap">
+                                            <div class="product-img product-img-zoom">
+                                                <a href="#">
+                                                    <img class="default-img" src="{% static 'assets/imgs/shop/product-15-1.jpg' %}" alt="" />
+                                                    <img class="hover-img" src="{% static 'assets/imgs/shop/product-15-2.jpg' %}" alt="" />
+                                                </a>
+                                            </div>
+                                            <div class="product-action-1">
+                                                <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i class="fi-rs-eye"></i></a>
+                                                <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                <a aria-label="Compare" class="action-btn small hover-up" href="#"><i class="fi-rs-shuffle"></i></a>
+                                            </div>
+                                            <div class="product-badges product-badges-position product-badges-mrg">
+                                                <span class="new">Save 35%</span>
+                                            </div>
+                                        </div>
+                                        <div class="product-content-wrap">
+                                            <div class="product-category">
+                                                <a href="#">Hodo Foods</a>
+                                            </div>
+                                            <h2><a href="#">Encore Seafoods Stuffed Alaskan</a></h2>
+                                            <div class="product-rate d-inline-block">
+                                                <div class="product-rating" style="width: 80%"></div>
+                                            </div>
+                                            <div class="product-price mt-10">
+                                                <span>₹238.85 </span>
+                                                <span class="old-price">₹245.8</span>
+                                            </div>
+                                            <div class="sold mt-15 mb-15">
+                                                <div class="progress mb-5">
+                                                    <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <span class="font-xs text-heading"> Sold: 90/120</span>
+                                            </div>
+                                            <a href="shop-cart.html" class="btn w-100 hover-up"><i class="fi-rs-shopping-cart mr-5"></i>Add To Cart</a>
+                                        </div>
+                                    </div> -->
+                                    <!--End product Wrap-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab-three-1" role="tabpanel" aria-labelledby="tab-three-1">
+                            <div class="carausel-4-columns-cover arrow-center position-relative">
+                                <div class="slider-arrow slider-arrow-2 carausel-4-columns-arrow" id="carausel-4-columns-3-arrows"></div>
+                                <div class="carausel-4-columns carausel-arrow-center" id="carausel-4-columns-3">
+                                    {% for np in new_products %}
+                                    <div class="product-cart-wrap">
+                                        <div class="product-img-action-wrap">
+                                            <div class="product-img product-img-zoom">
+                                                <a href="#">
+                                                    <img class="default-img" src="{{np.image.url}}" alt="" />
+                                                    <img class="hover-img" src="{{ np.hover_img.url }}" alt="" />
+                                                </a>
+                                            </div>
+                                            <div class="product-action-1">
+                                                <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i class="fi-rs-eye"></i></a>
+                                                <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                <a aria-label="Compare" class="action-btn small hover-up" href="#"><i class="fi-rs-shuffle"></i></a>
+                                            </div>
+                                            <div class="product-badges product-badges-position product-badges-mrg">
+                                                <span class="hot">{{np.status}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="product-content-wrap">
+                                            <div class="product-category">
+                                                <a href="#">{{np.category}}</a>
+                                            </div>
+                                            <h2><a href="#">{{np.title}}</a></h2>
+                                            <div class="product-rate d-inline-block">
+                                                <div class="product-rating" style="width: {{np.rating_value}}%"></div>
+                                            </div>
+                                            <div class="product-price mt-10">
+                                                <span>₹{{np.discount}} </span>
+                                                <span class="old-price">₹{% if np.updated_price != np.discount %}{{ np.updated_price }}{% else %}{{np.price}}{% endif %}</span>
+                                            </div>
+                                            <div class="sold mt-15 mb-15">
+                                                <div class="progress mb-5">
+                                                    <div class="progress-bar" role="progressbar" style="width: {{np.rating_value}}%" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <span class="font-xs text-heading"> Sold: 90/120</span>
+                                            </div>
+                                            <a href="{% url 'add_to_cart' np.id %}" class="btn w-100 hover-up"><i class="fi-rs-shopping-cart mr-5"></i>Add To Cart</a>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    <!--End product Wrap-->
+                                    <!-- <div class="product-cart-wrap">
+                                        <div class="product-img-action-wrap">
+                                            <div class="product-img product-img-zoom">
+                                                <a href="#">
+                                                    <img class="default-img" src="{% static 'assets/imgs/shop/product-8-1.jpg' %}" alt="" />
+                                                    <img class="hover-img" src="{% static 'assets/imgs/shop/product-8-2.jpg' %}" alt="" />
+                                                </a>
+                                            </div>
+                                            <div class="product-action-1">
+                                                <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i class="fi-rs-eye"></i></a>
+                                                <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                <a aria-label="Compare" class="action-btn small hover-up" href="#"><i class="fi-rs-shuffle"></i></a>
+                                            </div>
+                                            <div class="product-badges product-badges-position product-badges-mrg">
+                                                <span class="new">Save 35%</span>
+                                            </div>
+                                        </div>
+                                        <div class="product-content-wrap">
+                                            <div class="product-category">
+                                                <a href="#">Hodo Foods</a>
+                                            </div>
+                                            <h2><a href="#">Seeds of Change Organic Quinoa</a></h2>
+                                            <div class="product-rate d-inline-block">
+                                                <div class="product-rating" style="width: 80%"></div>
+                                            </div>
+                                            <div class="product-price mt-10">
+                                                <span>₹238.85 </span>
+                                                <span class="old-price">₹245.8</span>
+                                            </div>
+                                            <div class="sold mt-15 mb-15">
+                                                <div class="progress mb-5">
+                                                    <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <span class="font-xs text-heading"> Sold: 90/120</span>
+                                            </div>
+                                            <a href="shop-cart.html" class="btn w-100 hover-up"><i class="fi-rs-shopping-cart mr-5"></i>Add To Cart</a>
+                                        </div>
+                                    </div> -->
+                                    <!--End product Wrap-->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End tab-content-->
+                </div>
+                <!--End Col-lg-9-->
+            </div>
+        </div>
+    </section>
+    <!--End Best Sales-->
+    <section class="section-padding pb-5">
+        <div class="container">
+            <div class="section-title wow animate__animated animate__fadeIn" data-wow-delay="0">
+                <h3 class="">Deals Of The Day</h3>
+                <a class="show-all" href="{% url 'market' %}">
+							All Deals
+							<i class="fi-rs-angle-right"></i>
+						</a>
+            </div>
+            <div class="row">
+                {% for relt_prod in rp_prodcuts %}
+                <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                    <div class="product-cart-wrap mb-30">
+                        <div class="product-img-action-wrap">
+                            <div class="product-img product-img-zoom">
+                                <a href="{% url 'itemDetail' relt_prod.id %}">
+                                    <img class="default-img" src="{{ relt_prod.image.url }}" alt="" />
+                                    <img class="hover-img" src="{{ relt_prod.hover_img.url }}" alt="" />
+                                </a>
+                            </div>
+                            <div class="product-action-1">
+                                <a aria-label="Add To Wishlist" class="action-btn" href="{% url 'add_to_wishlist' relt_prod.id %}"><i class="fi-rs-heart"></i></a>
+                                <a aria-label="Compare" class="action-btn" href="#"><i class="fi-rs-shuffle"></i></a>
+                                <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                            </div>
+                            <div class="product-badges product-badges-position product-badges-mrg">
+                                <span class="hot">{% if relt_prod.status != None %}{{ relt_prod.status }}{% else %} New {% endif %}</span>
+                            </div>
+                        </div>
+                        <div class="product-content-wrap">
+                            <div class="product-category">
+                                <a href="{% url 'itemDetail' relt_prod.id %}">{{ relt_prod.category }}</a>
+                            </div>
+                            <h2><a href="{% url 'itemDetail' relt_prod.id %}">{{ relt_prod.title|truncatechars:50 }}</a></h2>
+                            <div class="product-rate-cover">
+                                <div class="product-rate d-inline-block">
+                                    <div class="product-rating" style="width: {{ relt_prod.rating_value }}%"></div>
+                                </div>
+                                <span class="font-small ml-5 text-muted"> ({{ relt_prod.rating }})</span>
+                            </div>
+                            <div>
+                                <span class="font-small text-muted">By <a href="#">{{ relt_prod.vendor }}</a></span>
+                            </div>
+                            <div class="product-card-bottom">
+                                <div class="product-price">
+                                    <span>₹{{ relt_prod.discount }}</span> {% if relt_prod.discount != relt_prod.updated_price %}
+                                    <span class="old-price">₹{{ relt_prod.updated_price }}</span> {% endif %}
+                                </div>
+                                <div class="add-cart">
+                                    <a class="add" href="{% url 'add_to_cart' relt_prod.id %}"><i class="fi-rs-shopping-cart mr-5"></i>Add </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!--End Deals-->
+    <section class="section-padding mb-30">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-3 col-lg-4 col-md-6 mb-sm-5 mb-md-0 wow animate__animated animate__fadeInUp" data-wow-delay="0">
+                    <h4 class="section-title style-1 mb-30  animated animated">Top Selling</h4>
+                    <div class="product-list-small  animated animated">
+
+                        {% for rp_prod in rp_prodcuts %}
+
+                        <article class="row align-items-center hover-up">
+                            <figure class="col-md-4 mb-0">
+                                <a href="{% url 'itemDetail' rp_prod.id %}"><img src="{{rp_prod.image.url}}" alt="" /></a>
+                            </figure>
+                            <div class="col-md-8 mb-0">
+                                <h6>
+                                    <a href="{% url 'itemDetail' rp_prod.id %}">{{rp_prod.title}}</a>
+                                </h6>
+                                <div class="product-rate-cover">
+                                    <div class="product-rate d-inline-block">
+                                        <div class="product-rating" style="width: {{rp_prod.rating_value}}%"></div>
+                                    </div>
+                                    <span class="font-small ml-5 text-muted"> ({{rp_prod.rating}})</span>
+                                </div>
+                                <div class="product-price">
+                                    <span>₹{{rp_prod.discount}}</span>
+                                    <span class="old-price">₹{% if rp_prod.updated_price != rp_prod.discount %}{{ rp_prod.updated_price }}{% else %}{{rp_prod.price}}{% endif %}</span>
+                                </div>
+                            </div>
+                        </article>
+                        {% endfor %}
+                        <!-- <article class="row align-items-center hover-up">
+                            <figure class="col-md-4 mb-0">
+                                <a href="#"><img src="{% static 'assets/imgs/shop/thumbnail-2.jpg' %}" alt="" /></a>
+                            </figure>
+                            <div class="col-md-8 mb-0">
+                                <h6>
+                                    <a href="#">Nestle Original Coffee-Mate Coffee Creamer</a>
+                                </h6>
+                                <div class="product-rate-cover">
+                                    <div class="product-rate d-inline-block">
+                                        <div class="product-rating" style="width: 90%"></div>
+                                    </div>
+                                    <span class="font-small ml-5 text-muted"> (4.0)</span>
+                                </div>
+                                <div class="product-price">
+                                    <span>₹32.85</span>
+                                    <span class="old-price">₹33.8</span>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="row align-items-center hover-up">
+                            <figure class="col-md-4 mb-0">
+                                <a href="#"><img src="{% static 'assets/imgs/shop/thumbnail-3.jpg' %}" alt="" /></a>
+                            </figure>
+                            <div class="col-md-8 mb-0">
+                                <h6>
+                                    <a href="#">Nestle Original Coffee-Mate Coffee Creamer</a>
+                                </h6>
+                                <div class="product-rate-cover">
+                                    <div class="product-rate d-inline-block">
+                                        <div class="product-rating" style="width: 90%"></div>
+                                    </div>
+                                    <span class="font-small ml-5 text-muted"> (4.0)</span>
+                                </div>
+                                <div class="product-price">
+                                    <span>₹32.85</span>
+                                    <span class="old-price">₹33.8</span>
+                                </div>
+                            </div>
+                        </article> -->
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-6 mb-md-0 wow animate__animated animate__fadeInUp" data-wow-delay=".1s">
+                    <h4 class="section-title style-1 mb-30  animated animated">Trending Products</h4>
+                    <div class="product-list-small  animated animated">
+                        {% for np in new_products %}
+                        <article class="row align-items-center hover-up">
+                            <figure class="col-md-4 mb-0">
+                                <a href="{% url 'itemDetail' np.id %}"><img src="{{np.image.url}}" alt="{{np.title}}" /></a>
+                            </figure>
+                            <div class="col-md-8 mb-0">
+                                <h6>
+                                    <a href="{% url 'itemDetail' np.id %}">{{np.title}}</a>
+                                </h6>
+                                <div class="product-rate-cover">
+                                    <div class="product-rate d-inline-block">
+                                        <div class="product-rating" style="width: {{np.rating_value}}%"></div>
+                                    </div>
+                                    <span class="font-small ml-5 text-muted"> ({{np.rating}})</span>
+                                </div>
+                                <div class="product-price">
+                                    <span>₹{{np.discount}}</span>
+                                    <span class="old-price">₹{% if np.updated_price != np.discount %}{{ np.updated_price }}{% else %}{{np.price}}{% endif %}</span>
+                                </div>
+                            </div>
+                        </article>
+                        {% endfor %}
+                        <!-- <article class="row align-items-center hover-up">
+                            <figure class="col-md-4 mb-0">
+                                <a href="#"><img src="{% static 'assets/imgs/shop/thumbnail-5.jpg' %}" alt="" /></a>
+                            </figure>
+                            <div class="col-md-8 mb-0">
+                                <h6>
+                                    <a href="#">Seeds of Change Organic Quinoa, Brown, & Red Rice</a>
+                                </h6>
+                                <div class="product-rate-cover">
+                                    <div class="product-rate d-inline-block">
+                                        <div class="product-rating" style="width: 90%"></div>
+                                    </div>
+                                    <span class="font-small ml-5 text-muted"> (4.0)</span>
+                                </div>
+                                <div class="product-price">
+                                    <span>₹32.85</span>
+                                    <span class="old-price">₹33.8</span>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="row align-items-center hover-up">
+                            <figure class="col-md-4 mb-0">
+                                <a href="#"><img src="{% static 'assets/imgs/shop/thumbnail-6.jpg' %}" alt="" /></a>
+                            </figure>
+                            <div class="col-md-8 mb-0">
+                                <h6>
+                                    <a href="#">Naturally Flavored Cinnamon Vanilla Light Roast Coffee</a>
+                                </h6>
+                                <div class="product-rate-cover">
+                                    <div class="product-rate d-inline-block">
+                                        <div class="product-rating" style="width: 90%"></div>
+                                    </div>
+                                    <span class="font-small ml-5 text-muted"> (4.0)</span>
+                                </div>
+                                <div class="product-price">
+                                    <span>₹32.85</span>
+                                    <span class="old-price">₹33.8</span>
+                                </div>
+                            </div>
+                        </article> -->
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-6 mb-sm-5 mb-md-0 d-none d-lg-block wow animate__animated animate__fadeInUp" data-wow-delay=".2s">
+                    <h4 class="section-title style-1 mb-30  animated animated">Recently added</h4>
+                    <div class="product-list-small  animated animated">
+                        {% for np in new_products %}
+                        <article class="row align-items-center hover-up">
+                            <figure class="col-md-4 mb-0">
+                                <a href="{% url 'itemDetail' np.id %}"><img src="{{np.image.url}}" alt="{{np.title}}" /></a>
+                            </figure>
+                            <div class="col-md-8 mb-0">
+                                <h6>
+                                    <a href="{% url 'itemDetail' np.id %}">{{np.title}}</a>
+                                </h6>
+                                <div class="product-rate-cover">
+                                    <div class="product-rate d-inline-block">
+                                        <div class="product-rating" style="width: {{np.rating_value}}%"></div>
+                                    </div>
+                                    <span class="font-small ml-5 text-muted"> ({{np.rating}})</span>
+                                </div>
+                                <div class="product-price">
+                                    <span>₹{{np.discount}}</span>
+                                    <span class="old-price">₹{% if np.updated_price != np.discount %}{{ np.updated_price }}{% else %}{{np.price}}{% endif %}</span>
+                                </div>
+                            </div>
+                        </article>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-6 mb-sm-5 mb-md-0 d-none d-xl-block wow animate__animated animate__fadeInUp" data-wow-delay=".3s">
+                    <h4 class="section-title style-1 mb-30  animated animated">Top Rated</h4>
+                    <div class="product-list-small  animated animated">
+                        {% for rp_prod in rp_prodcuts %}
+
+                        <article class="row align-items-center hover-up">
+                            <figure class="col-md-4 mb-0">
+                                <a href="{% url 'itemDetail' rp_prod.id %}"><img src="{{rp_prod.image.url}}" alt="" /></a>
+                            </figure>
+                            <div class="col-md-8 mb-0">
+                                <h6>
+                                    <a href="{% url 'itemDetail' rp_prod.id %}">{{rp_prod.title}}</a>
+                                </h6>
+                                <div class="product-rate-cover">
+                                    <div class="product-rate d-inline-block">
+                                        <div class="product-rating" style="width: {{rp_prod.rating_value}}%"></div>
+                                    </div>
+                                    <span class="font-small ml-5 text-muted"> ({{rp_prod.rating}})</span>
+                                </div>
+                                <div class="product-price">
+                                    <span>₹{{rp_prod.discount}}</span>
+                                    <span class="old-price">₹{% if rp_prod.updated_price != rp_prod.discount %}{{ rp_prod.updated_price }}{% else %}{{rp_prod.price}}{% endif %}</span>
+                                </div>
+                            </div>
+                        </article>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--End 4 columns-->
+</main>
+{% endblock %}

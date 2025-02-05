@@ -1,0 +1,23 @@
+<div id="formContainer">
+    <form method="post" enctype="multipart/form-data" hx-post="{% url 'add_category' %}" hx-target="#categoryFormContainer" hx-swap="innerHTML">
+        {% csrf_token %}
+        <div class="row">
+            <div class="form-group col-md-12">
+                {{ form.image.label_tag }} {{ form.image }}
+            </div>
+            <div class="form-group col-md-12">
+                {{ form.title.label_tag }} {{ form.title }}
+            </div>
+            <div class="form-group col-md-6">
+                {{ form.brand.label_tag }} {{ form.brand }}
+            </div>
+            <div class="form-group col-md-6">
+                {{ form.is_hidden.label_tag }} {{ form.is_hidden }}
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+    </form>
+</div>

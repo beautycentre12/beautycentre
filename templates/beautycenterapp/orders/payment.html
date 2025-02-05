@@ -1,0 +1,36 @@
+{% extends 'base.html' %} {% block maincontents %}
+<form method="POST">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        var options = {
+            key: "{{ razorpay_key }}", // This should be correctly passed
+            amount: "{{ amount }}", // Should be in paise
+            currency: "INR",
+            name: "{{ order.user.get_full_name }}", // Dynamically use user info
+            description: "Payment for your order",
+            image: "https://imgur.com/NOWiBu9", // Use a valid URL for your brand logo
+            order_id: "{{ order.provider_order_id }}", // Pass the Razorpay Order ID correctly
+            callback_url: "{{ callback_url }}", // Ensure this URL is correct
+            redirect: true,
+
+            prefill: {
+                name: "{{ user.get_full_name }}", // Use the logged-in user's data
+                email: "{{ user.email }}",
+                contact: "{{ user.profile.phone }}"
+            },
+
+            notes: {
+                address: "Metromoniya Corporate Office"
+            },
+
+            theme: {
+                color: "#3399cc"
+            }
+        };
+
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    </script>
+    <input type="hidden" custom="Hidden Element" name="hidden">
+</form>
+{% endblock %}

@@ -1,0 +1,574 @@
+{% extends "base.html" %} {% block maincontents %} {% load custom_filters %}
+<!--End header-->
+<main class="main pages">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="/" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                <span></span> Pages <span></span> My Account
+            </div>
+        </div>
+    </div>
+    <div class="page-content pt-150 pb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 m-auto">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="dashboard-menu">
+                                <ul class="nav flex-column" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-selected="false"><i class="fi-rs-settings-sliders mr-10"></i>Dashboard</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="dashboard-tab" data-bs-toggle="tab" href="#creditUser" role="tab" aria-controls="dashboard" aria-selected="false"><i class="fi-rs-settings-sliders mr-10"></i>Credit User</a>
+                                    </li>
+                                    <!-- <li class="nav-item">
+                                        <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="false"><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
+                                    </li> -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="track-orders-tab" data-bs-toggle="tab" href="#track-orders" role="tab" aria-controls="track-orders" aria-selected="false"><i class="fi-rs-shopping-cart-check mr-10"></i>Add Products</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="true"><i class="fi-rs-marker mr-10"></i>My Address</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="account-detail-tab" data-bs-toggle="tab" href="#account-detail" role="tab" aria-controls="account-detail" aria-selected="true"><i class="fi-rs-user mr-10"></i>Account details</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="account-detail-tab" data-bs-toggle="tab" href="#change-pass" role="tab" aria-controls="account-detail" aria-selected="true"><i class="fi-rs-user mr-10"></i>Change Password</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'signout' %}"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="tab-content account dashboard-content pl-50">
+                                <div class="tab-pane fade active show" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="mb-0">Hello {{request.user.get_full_name}}!</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <p>
+                                                From your account dashboard. you can easily check &amp; view your <a href="#">recent orders</a>,<br /> manage your <a href="#">shipping and billing addresses</a> and <a href="#">edit your password and account details.</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="creditUser" role="tabpanel" aria-labelledby="creditUser-tab">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <button type="button" class="btn btn-fill-out submit font-weight-bold" data-bs-toggle="modal" data-bs-target="#exampleModal-2">Create Credit User</button>
+                                            <!-- <h3 class="mb-0">Hello {{request.user.get_full_name}}!</h3> -->
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="text-center">List of Credits User</p>
+                                            {% if staffs %}
+                                            <table border="1" style="text-align:center;">
+                                                <thead>
+                                                    <th>S. No.</th>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Username</th>
+                                                    <th>Action</th>
+                                                </thead>
+                                                <tbody>
+                                                    <hr> {% for s in staffs %}
+                                                    <tr>
+                                                        <td>{{s.id}}</td>
+                                                        <td>{{s.first_name}} {{s.last_name}}</td>
+                                                        <td>{{s.email}}</td>
+                                                        <td>{{s.username}}</td>
+                                                        <td>
+                                                            <div class="d-flex">
+                                                                <button class="btn btn-danger mx-2"><i class="fi fi-rs-delete"></i></button>
+                                                                <button class="btn btn-danger"><i class="fi fi-rs-edit"></i></button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>{% else %}
+                                            <p class="text-center text-red">No any data of staff! Create with above button.</p> {% endif %}
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="tab-pane fade" id="track-orders" role="tabpanel" aria-labelledby="track-orders-tab">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="mb-0">Add Products</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <p>Create a products!</p>
+                                            <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#productModal" hx-get="{% url 'add_Product' %}" hx-target="#productFormContainer" hx-trigger="click">
+                                                <i class="fi fi-rs-add px-2"></i>Add Product
+                                            </a>
+
+                                            <a data-bs-toggle="modal" data-bs-target="#CategoryModal" class="btn btn-primary" href="#" id="addCategoryBtn" hx-get="{% url 'add_category' %}" hx-target="#categoryFormContainer" hx-trigger="click">
+                                                <i class="fi fi-rs-add px-2"></i>Add Category
+                                            </a>
+
+                                            <a data-bs-toggle="modal" data-bs-target="#SubCategoryModal" class="btn btn-primary" href="#" id="addSubCategoryBtn" hx-get="{% url 'add_subCate' %}" hx-target="#subCategoryFormContainer" hx-trigger="click">Add Sub Category</a>
+
+                                            <a data-bs-toggle="modal" data-bs-target="#BrandModal" class="btn btn-primary" href="#" id="addSubCategoryBtn" hx-get="{% url 'add_brand' %}" hx-target="#brandItemModelFormCainter" hx-trigger="click">Add Brand</a>
+
+
+                                            <!-- <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#BrandModal"><i class="fi fi-rs-add px-2"></i>Add Brand</a> -->
+                                        </div>
+                                    </div>
+
+                                    <div class="container" hx-swap="beforeend" style="height:250px; overflow: scroll">
+                                        <p class="h3">Product Table</p>
+                                        <hr>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope=" col ">Title</th>
+                                                    <th scope="col ">Price</th>
+                                                    <th scope="col ">Unit</th>
+                                                    <th scope="col ">Stock</th>
+                                                    <th scope="col ">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row ">1</th>
+                                                    <td>Mark</td>
+                                                    <td>Otto</td>
+                                                    <td>@mdo</td>
+                                                    <td>View</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row ">2</th>
+                                                    <td>Jacob</td>
+                                                    <td>Thornton</td>
+                                                    <td>@fat</td>
+                                                    <td>View</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row ">3</th>
+                                                    <td colspan="2 ">Larry the Bird</td>
+                                                    <td>@twitter</td>
+                                                    <td>View</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row ">3</th>
+                                                    <td colspan="2 ">Larry the Bird</td>
+                                                    <td>@twitter</td>
+                                                    <td>View</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row ">3</th>
+                                                    <td colspan="2 ">Larry the Bird</td>
+                                                    <td>@twitter</td>
+                                                    <td>View</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row ">3</th>
+                                                    <td colspan="2 ">Larry the Bird</td>
+                                                    <td>@twitter</td>
+                                                    <td>View</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row ">3</th>
+                                                    <td colspan="2 ">Larry the Bird</td>
+                                                    <td>@twitter</td>
+                                                    <td>View</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row ">3</th>
+                                                    <td colspan="2 ">Larry the Bird</td>
+                                                    <td>@twitter</td>
+                                                    <td>View</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="container ">
+                                        <p class="h3 ">Category Table</p>
+                                        <hr>
+                                        <table class="table ">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col ">#</th>
+                                                    <th scope="col ">First</th>
+                                                    <th scope="col ">Last</th>
+                                                    <th scope="col ">Handle</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row ">1</th>
+                                                    <td>Mark</td>
+                                                    <td>Otto</td>
+                                                    <td>@mdo</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row ">2</th>
+                                                    <td>Jacob</td>
+                                                    <td>Thornton</td>
+                                                    <td>@fat</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row ">3</th>
+                                                    <td colspan="2 ">Larry the Bird</td>
+                                                    <td>@twitter</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="container ">
+                                        <p class="h3 ">Sub Category Table</p>
+                                        <hr>
+                                        <table class="table ">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col ">#</th>
+                                                    <th scope="col ">First</th>
+                                                    <th scope="col ">Last</th>
+                                                    <th scope="col ">Handle</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row ">1</th>
+                                                    <td>Mark</td>
+                                                    <td>Otto</td>
+                                                    <td>@mdo</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row ">2</th>
+                                                    <td>Jacob</td>
+                                                    <td>Thornton</td>
+                                                    <td>@fat</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row ">3</th>
+                                                    <td colspan="2 ">Larry the Bird</td>
+                                                    <td>@twitter</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="container ">
+                                        <p class="h3 ">Sub Brand Table</p>
+                                        <hr>
+                                        <table class="table ">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col ">#</th>
+                                                    <th scope="col ">First</th>
+                                                    <th scope="col ">Last</th>
+                                                    <th scope="col ">Handle</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row ">1</th>
+                                                    <td>Mark</td>
+                                                    <td>Otto</td>
+                                                    <td>@mdo</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row ">2</th>
+                                                    <td>Jacob</td>
+                                                    <td>Thornton</td>
+                                                    <td>@fat</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row ">3</th>
+                                                    <td colspan="2 ">Larry the Bird</td>
+                                                    <td>@twitter</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                {% comment %}
+                                <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="card mb-3 mb-lg-0">
+                                                <div class="card-header">
+                                                    <h3 class="mb-0">Billing Address</h3>
+                                                </div>
+                                                <div class="card-body">
+                                                    <address>
+                                                                3522 Interstate<br />
+                                                                75 Business Spur,<br />
+                                                                Sault Ste. <br />Marie, MI 49783
+                                                            </address>
+                                                    <p>New York</p>
+                                                    <a href="# " class="btn-small ">Edit</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5 class="mb-0 ">Shipping Address</h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <address>
+                                                                4299 Express Lane<br />
+                                                                Sarasota, <br />FL 34249 USA <br />Phone: 1.941.227.4444
+                                                            </address>
+                                                    <p>Sarasota</p>
+                                                    <a href="#" class="btn-small">Edit</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endcomment %}
+                                <div class="tab-pane fade" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Account Details</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <!-- <p>Already have an account? <a href="page-login.html ">Log in instead!</a></p> -->
+                                            <form method="post" name="enq">
+                                                <div class="row">
+                                                    <div class="form-group col-md-6">
+                                                        <label>First Name <span class="required">*</span></label>
+                                                        <input required=" " class="form-control" name="name" type="text" value="{{user_detail.first_name}}" disabled/>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Last Name <span class="required">*</span></label>
+                                                        <input required=" " class="form-control" name="phone" value="{{user_detail.last_name}}" disabled/>
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                        <label>User Name <span class="required">*</span></label>
+                                                        <input required=" " class="form-control" name="username" type="text" value="{{user_detail.username}}" disabled/>
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                        <label>Email Address <span class="required">*</span></label>
+                                                        <input required=" " class="form-control" name="email" type="email" value="{{user_detail.email}}" disabled/>
+                                                    </div>
+                                                    <div class="form-group col-md-12 ">
+                                                        <label>Phone No.<span class="required ">*</span></label>
+                                                        <input required class="form-control" name="phone_no" type="number" value="{{phone_no}}" disabled/>
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                        <label>Alternate Phone No.<span class="required "></span></label>
+                                                        <input class="form-control" name="phone_no " type="number" value="{{alter_phone_no}}" disabled/>
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                        <label>GST No.<span class="required"></span></label>
+                                                        <input class="form-control " name="gst_no" type="text" value="{{gst_no}}" disabled/>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <button type="button" class="btn btn-fill-out submit font-weight-bold" data-bs-toggle="modal" data-bs-target="#exampleModal">Update</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="change-pass" role="tabpanel" aria-labelledby="account-detail-tab">
+                                    <div class="card ">
+                                        <div class="card-header">
+                                            <h5>Change old password</h5>
+                                        </div>
+                                        <div class="card-body ">
+                                            <form method="post" name="enq" action="{% url 'passchange' %}">
+                                                {% csrf_token %}
+                                                <div class="row ">
+                                                    <div class="form-group col-md-12 ">
+                                                        <label>Current Password <span class="required ">*</span></label>
+                                                        <input required=" " class="form-control " name="current_password" type="password " />
+                                                    </div>
+                                                    <div class="form-group col-md-12 ">
+                                                        <label>New Password <span class="required ">*</span></label>
+                                                        <input required=" " class="form-control " name="new_password" type="password " />
+                                                    </div>
+                                                    <div class="form-group col-md-12 ">
+                                                        <label>Confirm Password <span class="required ">*</span></label>
+                                                        <input required=" " class="form-control " name="confirm_new_password" type="password " />
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <button type="submit" class="btn btn-fill-out submit font-weight-bold ">Update</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Updates Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" name="enq" action="{% url 'useredit' %}">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>First Name <span class="required ">*</span></label>
+                                <input required=" " class="form-control " name="fname " type="text " value="{{user_detail.first_name}} " />
+                            </div>
+                            <div class="form-group col-md-6 ">
+                                <label>Last Name <span class="required ">*</span></label>
+                                <input required=" " class="form-control " name="lname " value="{{user_detail.last_name}} " />
+                            </div>
+                            <div class="form-group col-md-12 ">
+                                <label>User Name <span class="required ">*</span></label>
+                                <input required=" " class="form-control " name="username " type="text " value="{{user_detail.username}} " />
+                            </div>
+                            <div class="form-group col-md-12 ">
+                                <label>Email Address <span class="required ">*</span></label>
+                                <input required=" " class="form-control " name="email " type="email " value="{{user_detail.email}} " />
+                            </div>
+                            <div class="form-group col-md-12 ">
+                                <label>Phone No.<span class="required ">*</span></label>
+                                <input required class="form-control " name="phone_no " type="number " value="{{phone_no}} " />
+                            </div>
+                            <div class="form-group col-md-12 ">
+                                <label>Alternate Phone No.<span class="required "></span></label>
+                                <input class="form-control " name="alt_phone_no " type="number " value="{{alter_phone_no}} " />
+                            </div>
+                            <div class="form-group col-md-12 ">
+                                <label>GST No.<span class="required "></span></label>
+                                <input class="form-control " name="gst_no " type="text " value="{{gst_no}} " />
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer ">
+                    <button type="button " class="btn btn-secondary " data-bs-dismiss="modal ">Close</button>
+                    <button type="submit " class="btn btn-primary ">Update</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Product Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="productFormContainer">
+                    <!-- Form content will be loaded here dynamically -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- category model -->
+    <div class="modal fade" id="CategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Category</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="categoryFormContainer">
+                    <!-- dynamicaly form will appears -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- subcategory model -->
+    <div class="modal fade" id="SubCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Sub Category</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="subCategoryFormContainer">
+                    <!-- Form will load here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- subcategory model -->
+    <div class="modal fade" id="BrandModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Brands</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="brandItemModelFormCainter">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal-2 -->
+    <div class="modal fade" id="exampleModal-2" tabindex="-1" aria-labelledby="exampleModalLabel-2" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Create Your Credits Users</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" name="enq" action="{% url 'useredit' %}">
+                        {% csrf_token %}
+                        <div class="row ">
+                            <div class="form-group col-md-6 ">
+                                <label>First Name <span class="required ">*</span></label>
+                                <input required=" " class="form-control " name="fname " type="text " value="{{user_detail.first_name}} " />
+                            </div>
+                            <div class="form-group col-md-6 ">
+                                <label>Last Name <span class="required ">*</span></label>
+                                <input required=" " class="form-control " name="lname " value="{{user_detail.last_name}} " />
+                            </div>
+                            <div class="form-group col-md-12 ">
+                                <label>User Name <span class="required ">*</span></label>
+                                <input required=" " class="form-control " name="username " type="text " value="{{user_detail.username}} " />
+                            </div>
+                            <div class="form-group col-md-12 ">
+                                <label>Email Address <span class="required ">*</span></label>
+                                <input required=" " class="form-control " name="email " type="email " value="{{user_detail.email}} " />
+                            </div>
+                            <div class="form-group col-md-12 ">
+                                <label>Phone No.<span class="required ">*</span></label>
+                                <input required class="form-control " name="phone_no " type="number " value="{{phone_no}} " />
+                            </div>
+                            <div class="form-group col-md-12 ">
+                                <label>Alternate Phone No.<span class="required "></span></label>
+                                <input class="form-control " name="alt_phone_no " type="number " value="{{alter_phone_no}} " />
+                            </div>
+                            <div class="form-group col-md-12 ">
+                                <label>GST No.<span class="required "></span></label>
+                                <input class="form-control " name="gst_no " type="text " value="{{gst_no}} " />
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</main>{% endblock %}

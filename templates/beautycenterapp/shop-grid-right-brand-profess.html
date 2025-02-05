@@ -1,0 +1,316 @@
+{% extends "base.html" %} {% load static %} {% block maincontents %}
+<!--End header-->
+<main class="main">
+    <div class="page-header mt-30 mb-50">
+        <div class="container">
+            <div class="archive-header">
+                <div class="row align-items-center">
+
+                    <div class="col-xl-3">
+                        <h1 class="mb-15">{{ division }}</h1>
+                        <div class="breadcrumb">
+                            <a href="/" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                            <span></span> Shop <span></span> {{ division }}
+                        </div>
+                    </div>
+                    <div class="col-xl-9 text-end d-none d-xl-block">
+                        <ul class="tags-list">
+                            {% for category in categories|slice:":5" %}
+                            <li class="hover-up">
+                                <a href="{% url 'category_detail' category.id %}"><i class="fi-rs-cross mr-10"></i>{{ category.title }}</a>
+                            </li>
+                            {% endfor %}
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mb-30">
+        <div class="row">
+            <div class="col-lg-4-5">
+                <div class="shop-product-fillter">
+                    <div class="totall-product">
+                        <p>We found <strong class="text-brand">{% if count_item %}{{count_item}}{% else %}0{% endif %}</strong> items for you!</p>
+                    </div>
+                    <div class="sort-by-product-area">
+                        <div class="sort-by-cover mr-10">
+                            <div class="sort-by-product-wrap">
+                                <div class="sort-by">
+                                    <span><i class="fi-rs-apps"></i>Show:</span>
+                                </div>
+                                <div class="sort-by-dropdown-wrap">
+                                    <span> 50 <i class="fi-rs-angle-small-down"></i></span>
+                                </div>
+                            </div>
+                            <div class="sort-by-dropdown">
+                                <ul>
+                                    <li><a class="active" href="#">50</a></li>
+                                    <li><a href="#">100</a></li>
+                                    <li><a href="#">150</a></li>
+                                    <li><a href="#">200</a></li>
+                                    <li><a href="#">All</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="sort-by-cover">
+                            <div class="sort-by-product-wrap">
+                                <div class="sort-by">
+                                    <span><i class="fi-rs-apps-sort"></i>Sort by:</span>
+                                </div>
+                                <div class="sort-by-dropdown-wrap">
+                                    <span> Featured <i class="fi-rs-angle-small-down"></i></span>
+                                </div>
+                            </div>
+                            <div class="sort-by-dropdown">
+                                <ul>
+                                    <li><a class="active" href="#">Featured</a></li>
+                                    <li><a href="#">Price: Low to High</a></li>
+                                    <li><a href="#">Price: High to Low</a></li>
+                                    <li><a href="#">Release Date</a></li>
+                                    <li><a href="#">Avg. Rating</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-list mb-50">
+                    {% if products %} {% for prod in products %}
+                    <div class="product-cart-wrap">
+                        <div class="product-img-action-wrap">
+                            <div class="product-img product-img-zoom">
+                                <div class="product-img-inner">
+                                    <a href="{% url 'itemDetail' prod.id %}">
+                                        <img class="default-img" src="{{prod.image.url}}" alt="" />
+                                        <img class="hover-img" src="{{prod.hover_img.url}}" alt="" />
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="product-action-1">
+                                <a aria-label="Add To Wishlist" class="action-btn" href="{% url 'add_to_wishlist' prod.id %}"><i class="fi-rs-heart"></i></a>
+                                <a aria-label="Compare" class="action-btn" href="#"><i class="fi-rs-shuffle"></i></a>
+                                <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                            </div>
+                            <div class="product-badges product-badges-position product-badges-mrg">
+                                <span class="hot">{{prod.status}}</span>
+                            </div>
+                        </div>
+                        <div class="product-content-wrap">
+                            <div class="product-category">
+                                <a href="shop-grid-right.html">{{prod.category}}</a>
+                            </div>
+                            <h2><a href="{% url 'itemDetail' prod.id %}">{{prod.title}}</a></h2>
+                            <div class="product-rate-cover">
+                                <div class="product-rate d-inline-block">
+                                    <div class="product-rating" style="width: {{prod.rating_value}}%"></div>
+                                </div>
+                                <span class="font-small ml-5 text-muted"> ({{prod.rating}})</span>
+                                <span class="ml-30">
+                                    {% for unit in prod.units.all %}
+                                        {{ unit.display_name }}{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                </span>
+
+                            </div>
+                            <p class="mt-15 mb-15">{{prod.title}}</p>
+                            <div class="product-price">
+                                <span>₹{{prod.discount}}</span>
+                                <span class="old-price">₹{{prod.price}}</span>
+                            </div>
+                            <div class="mt-30 d-flex align-items-center">
+                                <a aria-label="Buy now" class="btn" href="{% url 'add_to_cart' prod.id %}"><i class="fi-rs-shopping-cart mr-5"></i>Add to Cart</a>
+                                <a href="#" class="add-wishlish ml-30 text-body font-sm font-heading font-weight-bold"><i class="fi-rs-shuffle mr-5"></i>Add Compare</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %} {% else %}
+                    <p>Data Not Found!</p> {% endif %}
+                </div>
+                <!--product grid-->
+                <!-- Pagination Controls -->
+                <div class="pagination-area mt-20 mb-20">
+                    <!--<nav aria-label="Page navigation example">-->
+                    <!--    {% if page_obj|length > 2 %}-->
+                    <!--    <ul class="pagination justify-content-start">-->
+                    <!--        {% if page_obj.has_previous %}-->
+                    <!--        <li class="page-item">-->
+                    <!--            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">-->
+                    <!--                <i class="fi-rs-arrow-small-left"></i>-->
+                    <!--            </a>-->
+                    <!--        </li>-->
+                    <!--        {% endif %} {% for num in page_obj.paginator.page_range %} {% if page_obj.number == num %}-->
+                    <!--        <li class="page-item active">-->
+                    <!--            <a class="page-link" href="#">{{ num }}</a>-->
+                    <!--        </li>-->
+                    <!--        {% else %}-->
+                    <!--        <li class="page-item">-->
+                    <!--            <a class="page-link" href="?page={{ num }}">{{ num }}</a>-->
+                    <!--        </li>-->
+                    <!--        {% endif %} {% endfor %} {% if page_obj.has_next %}-->
+                    <!--        <li class="page-item">-->
+                    <!--            <a class="page-link" href="?page={{ page_obj.next_page_number }}">-->
+                    <!--                <i class="fi-rs-arrow-small-right"></i>-->
+                    <!--            </a>-->
+                    <!--        </li>-->
+                    <!--        {% endif %}-->
+                    <!--    </ul>-->
+                    <!--    {% endif %}-->
+                    <!--</nav>-->
+                    <nav aria-label="Page navigation">
+                        {% if page_obj.paginator.num_pages >= 2 %}
+                        <ul class="pagination justify-content-center">
+                    
+                            <!-- Previous button -->
+                            {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                    <i class="fi-rs-arrow-small-left"></i>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link"><i class="fi-rs-arrow-small-left"></i></span>
+                            </li>
+                            {% endif %}
+                    
+                            <!-- Dynamically show first 3 pages -->
+                            {% if page_obj.number < 3 %}
+                                {% for num in page_obj.paginator.page_range|slice:":3" %}
+                                    <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endfor %}
+                            {% endif %}
+                    
+                            <!-- Dynamically show page numbers based on the current page -->
+                            {% if page_obj.number >= 3 %}
+                                {% for num in page_obj.paginator.page_range %}
+                                    {% if num <= page_obj.number|add:"+1" and num >= page_obj.number|add:"-1" %}
+                                        <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                    
+                            <!-- Next button -->
+                            {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                    <i class="fi-rs-arrow-small-right"></i>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link"><i class="fi-rs-arrow-small-right"></i></span>
+                            </li>
+                            {% endif %}
+                    
+                        </ul>
+                        {% endif %}
+                </nav>
+                </div>
+                <section class="section-padding pb-5">
+                    <div class="section-title">
+                        <h3 class="">Deals Of The Day</h3>
+                        <a class="show-all" href="{% url 'market' %}">
+                                    All Deals
+                                    <i class="fi-rs-angle-right"></i>
+                                </a>
+                    </div>
+                    <div class="row">
+                        {% for relt_prod in new_products %}
+                        <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                            <div class="product-cart-wrap mb-30">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a href="{% url 'itemDetail' relt_prod.id %}">
+                                            <img class="default-img" src="{{ relt_prod.image.url }}" alt="" />
+                                            <img class="hover-img" src="{{ relt_prod.hover_img.url }}" alt="" />
+                                        </a>
+                                    </div>
+                                    <div class="product-action-1">
+                                        <a aria-label="Add To Wishlist" class="action-btn" href="{% url 'add_to_wishlist' relt_prod.id %}"><i class="fi-rs-heart"></i></a>
+                                        <a aria-label="Compare" class="action-btn" href="#"><i class="fi-rs-shuffle"></i></a>
+                                        <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                                    </div>
+                                    <div class="product-badges product-badges-position product-badges-mrg">
+                                        <span class="hot">{% if relt_prod.status != None %}{{ relt_prod.status }}{% else %} New {% endif %}</span>
+                                    </div>
+                                </div>
+                                <div class="product-content-wrap">
+                                    <div class="product-category">
+                                        <a href="{% url 'itemDetail' relt_prod.id %}">{{ relt_prod.category }}</a>
+                                    </div>
+                                    <h2><a href="{% url 'itemDetail' relt_prod.id %}">{{ relt_prod.title|truncatechars:50 }}</a></h2>
+                                    <div class="product-rate-cover">
+                                        <div class="product-rate d-inline-block">
+                                            <div class="product-rating" style="width: {{ relt_prod.rating_value }}%"></div>
+                                        </div>
+                                        <span class="font-small ml-5 text-muted"> ({{ relt_prod.rating }})</span>
+                                    </div>
+                                    <div>
+                                        <span class="font-small text-muted">By <a href="#">{{ relt_prod.vendor }}</a></span>
+                                    </div>
+                                    <div class="product-card-bottom">
+                                        <div class="product-price">
+                                            <span>₹{{ relt_prod.discount }}</span> {% if relt_prod.discount != relt_prod.updated_price %}
+                                            <span class="old-price">₹{{ relt_prod.updated_price }}</span> {% endif %}
+                                        </div>
+                                        <div class="add-cart">
+                                            <a class="add" href="{% url 'add_to_cart' relt_prod.id %}"><i class="fi-rs-shopping-cart mr-5"></i>Add </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </section>
+                <!--End Deals-->
+            </div>
+            <div class="col-lg-1-5 primary-sidebar sticky-sidebar">
+                <div class="sidebar-widget widget-category-2 mb-30">
+                    <h5 class="section-title style-1 mb-30">Category</h5>
+                    {% if categories %}
+                    <ul>
+                        {% for c in categories|slice:":10" %}
+                        <li>
+                            <a href="{% url 'category_detail' c.id %}"> <img src="{% if c.image.url %}{{c.image.url}}{% else %}{% static 'assets/imgs/theme/icons/category-1.svg' %}{% endif %}" alt="" />{{c.title}}</a><span class="count">{{c.product_count}}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                <div class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10">
+                    <h5 class="section-title style-1 mb-30">New products</h5>
+                    {% for np in new_products %}
+                    <div class="single-post clearfix">
+                        <div class="image">
+                            <img src="{% if np.image %}{{np.image.url}}{% else %}{% static 'assets/imgs/shop/thumbnail-3.jpg' %}{% endif %}" alt="#" />
+                        </div>
+                        <div class="content pt-10">
+                            <h5><a href="{% url 'itemDetail' np.id %}">{{np.title}}</a></h5>
+                            <p class="price mb-0 mt-5">₹{{np.price}}</p>
+                            <div class="product-rate">
+                                <div class="product-rating" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="banner-img wow fadeIn mb-lg-0 animated d-lg-block d-none">
+                    <img src="{% static 'assets/imgs/banner/banner-11.png' %}" alt="" />
+                    <div class="banner-text">
+                        <span>Oganic</span>
+                        <h4>
+                            Save 17% <br /> on <span class="text-brand">Oganic</span><br /> Juice
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

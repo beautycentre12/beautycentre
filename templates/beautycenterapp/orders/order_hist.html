@@ -1,0 +1,294 @@
+{% extends "base.html" %} {% block maincontents %} {% load static %}
+
+<style>
+    /* Add custom styles here */
+    
+    .order-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        padding: 20px;
+    }
+    
+    .order-card .order-details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .order-card .order-status {
+        font-weight: bold;
+    }
+    /* Style for the table */
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    th,
+    td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+    
+    th {
+        background-color: #f2f2f2;
+    }
+    /* Style for the modal */
+    
+    .modal-content {
+        border-radius: 10px;
+    }
+    
+    .modal-header {
+        background-color: #81c408 !important;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+    
+    .modal-title {
+        margin: 0;
+    }
+    
+    .modal-body {
+        padding: 20px;
+    }
+    
+    .modal-footer {
+        padding: 20px;
+        justify-content: space-between;
+        border-top: none;
+    }
+</style>
+
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">History</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="#" aria-readonly="true">Pages</a></li>
+        <li class="breadcrumb-item active text-white">History</li>
+    </ol>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="order-card">
+                <div class="order-details">
+                    <div><b>Order #1234</b></div>
+                    <div class="order-status text-success">Delivered</div>
+                </div>
+                <main class="d-flex" style="justify-content: space-between;">
+                    <div>
+                        <div>Date: January 1, 2024</div>
+                        <div>Total: $100.00</div>
+                        <div>Items: Product A, Product B</div>
+                    </div>
+                    <div class="img"><img src="{% static 'img/vegetable-item-1.jpg' %}" width="100" alt="Product Image"></div>
+                </main>
+                <div>
+                    <a href="{% url 'bagicha' %}" class="btn btn-outline-primary">Shop Again</a>
+                    <a href="#" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#exampleModal">Invoice</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="order-card">
+                <div class="order-details">
+                    <div><b>Order #1234</b></div>
+                    <div class="order-status text-success">Delivered</div>
+                </div>
+                <main class="d-flex" style="justify-content: space-between;">
+                    <div>
+                        <div>Date: January 1, 2024</div>
+                        <div>Total: $100.00</div>
+                        <div>Items: Product A, Product B</div>
+                    </div>
+                    <div class="img"><img src="{% static 'img/vegetable-item-4.jpg' %}" width="100" alt="Product Image"></div>
+                </main>
+                <div>
+                    <a href="{% url 'bagicha' %}" class="btn btn-outline-primary">Shop Again</a>
+                    <a href="#" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#exampleModal">Invoice</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="order-card">
+                <div class="order-details">
+                    <div><b>Order #1234</b></div>
+                    <div class="order-status text-success">Delivered</div>
+                </div>
+                <main class="d-flex" style="justify-content: space-between;">
+                    <div>
+                        <div>Date: January 1, 2024</div>
+                        <div>Total: $100.00</div>
+                        <div>Items: Product A, Product B</div>
+                    </div>
+                    <div class="img"><img src="{% static 'img/fruite-item-1.jpg' %}" width="100" alt="Product Image"></div>
+                </main>
+                <div>
+                    <a href="{% url 'bagicha' %}" class="btn btn-outline-primary">Shop Again</a>
+                    <a href="#" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#exampleModal">Invoice</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="order-card">
+                <div class="order-details">
+                    <div><b>Order #1234</b></div>
+                    <div class="order-status text-warning">Unfullfill</div>
+                </div>
+                <main class="d-flex" style="justify-content: space-between;">
+                    <div>
+                        <div>Date: January 1, 2024</div>
+                        <div>Total: $100.00</div>
+                        <div>Items: Product A, Product B</div>
+                    </div>
+                    <div class="img"><img src="{% static 'img/fruite-item-4.jpg' %}" width="100" alt="Product Image"></div>
+                </main>
+                <div>
+                    <a href="{% url 'bagicha' %}" class="btn btn-outline-primary">Shop Again</a>
+                    <a href="#" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#exampleModal">Invoice</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="order-card">
+                <div class="order-details">
+                    <div><b>Order #1234</b></div>
+                    <div class="order-status text-danger">Failed Payment</div>
+                </div>
+                <main class="d-flex" style="justify-content: space-between;">
+                    <div>
+                        <div>Date: January 1, 2024</div>
+                        <div>Total: $100.00</div>
+                        <div>Items: Product A, Product B</div>
+                    </div>
+                    <div class="img"><img src="{% static 'img/fruite-item-3.jpg' %}" width="100" alt="Product Image"></div>
+                </main>
+                <div>
+                    <a href="{% url 'bagicha' %}" class="btn btn-outline-primary">Shop Again</a>
+                    <a href="#" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#exampleModal">Invoice</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="order-card">
+                <div class="order-details">
+                    <div><b>Order #1234</b></div>
+                    <div class="order-status text-warning">Processing</div>
+                </div>
+                <main class="d-flex" style="justify-content: space-between;">
+                    <div>
+                        <div>Date: January 1, 2024</div>
+                        <div>Total: $100.00</div>
+                        <div>Items: Product A, Product B</div>
+                    </div>
+                    <div class="img"><img src="{% static 'img/vegetable-item-3.png' %}" width="100" alt="Product Image"></div>
+                </main>
+                <div>
+                    <a href="{% url 'bagicha' %}" class="btn btn-outline-primary">Shop Again</a>
+                    <a href="#" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#exampleModal">Invoice</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-bg-primary" id="exampleModalLabel">Invoice Information</h5>
+                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                </div>
+                <div class="modal-body">
+                    <img src="{% static 'img/invoice-demo.png' %}" alt="">
+                    <div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th colspan="2">Invoice Number: INV20240414</th>
+                                    <th colspan="2" style="text-align: right;">Date: April 14, 2024</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4">
+                                        <b>Bill To:</b><br> John Doe<br> 123 Main Street<br> Anytown, USA 12345
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Price ($)</th>
+                                    <th>Total ($)</th>
+                                </tr>
+                                <tr>
+                                    <td>Organic Apples (1kg)</td>
+                                    <td>2</td>
+                                    <td>3.99</td>
+                                    <td>7.98</td>
+                                </tr>
+                                <tr>
+                                    <td>Bananas (1 dozen)</td>
+                                    <td>1</td>
+                                    <td>2.50</td>
+                                    <td>2.50</td>
+                                </tr>
+                                <tr>
+                                    <td>Carrots (500g)</td>
+                                    <td>3</td>
+                                    <td>1.75</td>
+                                    <td>5.25</td>
+                                </tr>
+                                <tr>
+                                    <td>Spinach (1 bunch)</td>
+                                    <td>2</td>
+                                    <td>2.00</td>
+                                    <td>4.00</td>
+                                </tr>
+                                <tr>
+                                    <th colspan="3" style="text-align: right;">Subtotal:</th>
+                                    <td>19.73</td>
+                                </tr>
+                                <tr>
+                                    <th colspan="3" style="text-align: right;">Tax (7%):</th>
+                                    <td>1.38</td>
+                                </tr>
+                                <tr>
+                                    <th colspan="3" style="text-align: right;">Shipping:</th>
+                                    <td>5.00</td>
+                                </tr>
+                                <tr>
+                                    <th colspan="3" style="text-align: right;">Total Due:</th>
+                                    <td>26.11</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-outline-primary">Download</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-12">
+        <div class="pagination d-flex justify-content-center mt-5">
+            <a href="#" class="rounded">&laquo;</a>
+            <a href="#" class="active rounded">1</a>
+            <a href="#" class="rounded">2</a>
+            <a href="#" class="rounded">&raquo;</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

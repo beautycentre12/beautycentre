@@ -1,0 +1,14 @@
+{% extends "base.html" %} {% block maincontents %}
+
+<style>
+    form {
+        display: table;
+        margin: auto;
+    }
+</style>
+<h1 style="text-align: center;">Add Category</h1>
+<form method="post" enctype="multipart/form-data" id="form">
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit">Add Category</button>
+</form>
+<a href="{% url 'home' %}" style="text-align: center;">Back to Home</a> {% endblock %}

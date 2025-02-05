@@ -1,0 +1,135 @@
+{% extends "base.html" %}{% load static %} {% block maincontents %}
+<!--End header-->
+<main class="main pages">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="/" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                <span></span> Pages <span></span> My Account
+            </div>
+        </div>
+    </div>
+    <div class="page-content pt-150 pb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8 col-lg-10 col-md-12 m-auto">
+                    <div class="row">
+                        <div class="col-lg-6 pr-30 d-none d-lg-block">
+                            <img class="border-radius-15" src="{% static 'assets/imgs/page/login-1.png' %}" alt="" />
+                        </div>
+                        <div class="col-lg-6 col-md-8">
+                            <div class="login_wrap widget-taber-content background-white">
+                                <div class="padding_eight_all bg-white">
+                                    <div class="heading_s1">
+                                        <h1 class="mb-5">Login</h1>
+                                        <p class="mb-30">Don't have an account? <a href="{% url 'signup' %}">Create here</a></p>
+                                    </div>
+                                    <form id="loginForm" method="post">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <input type="text" id="phoneNumber" required="" name="username" placeholder="Phone Number *" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input required="" type="text" id="otpInput" name="password" placeholder="Your OTP *" disabled />
+                                        </div>
+                                        <div class="login_footer form-group">
+                                            <a class="security-code">Get OTP</a>
+                                            <!-- Button to trigger OTP send -->
+                                        </div>
+                                        <div class="form-group">
+                                            <button id="loginButton" type="submit" class="btn btn-heading btn-block hover-up" name="login" disabled>Log in</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js "></script>
+<script>
+    $(document).ready(function() {
+        // Handle OTP request
+        $('.security-code').on('click', function(e) {
+            console.log('getting click on get otp button!');
+            e.preventDefault();
+            let phoneNumber = $('#phoneNumber').val();
+
+            if (!phoneNumber) {
+                showAlert('Error', 'Please enter a phone number.');
+                return;
+            }
+
+            console.log('Sending OTP request for phone number:', phoneNumber);
+
+            $.ajax({
+                type: 'POST',
+                url: '{% url "signin" %}', // URL to hit the signin function
+                data: {
+                    'username': phoneNumber,
+                    'get_otp': true, // Signal that we want to get an OTP
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    console.log('OTP request response:', response);
+
+                    if (response.status === 'success') {
+                        showAlert('OTP Sent', 'OTP sent successfully to ' + phoneNumber);
+                        $('#otpInput').prop('disabled', false); // Enable OTP input field
+                        $('#loginButton').prop('disabled', false); // Enable login button
+                    } else {
+                        showAlert('Error', response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('OTP request failed:', error);
+                    showAlert('Error', 'An error occurred while sending OTP. Please try again.');
+                }
+            });
+        });
+
+        // Handle login form submission
+        $('#loginForm').on('submit', function(e) {
+            e.preventDefault();
+            let phoneNumber = $('#phoneNumber').val();
+            let otp = $('#otpInput').val(); // OTP input is treated as password field
+
+            if (!phoneNumber || !otp) {
+                showAlert('Error', 'Please enter your phone number and OTP.');
+                return;
+            }
+
+            console.log('Submitting login request with OTP:', otp);
+
+            $.ajax({
+                type: 'POST',
+                url: '{% url "signin" %}', // URL to verify OTP and login
+                data: {
+                    'username': phoneNumber,
+                    'password': otp,
+                    'login': true, // Signal that we're trying to login with OTP
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    console.log('Login request response:', response);
+
+                    if (response.status === 'success') {
+                        showAlert('Success', 'Login successful!');
+                        window.location.href = '/'; // Redirect to home page
+                    } else {
+                        showAlert('Error', 'Login failed: ' + response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Login request failed:', error);
+                    showAlert('Error', 'An error occurred while logging in. Please try again.');
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

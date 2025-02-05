@@ -1,0 +1,461 @@
+{% extends "base.html" %} {% load static %} {% load custom_filters %} {% block maincontents %}
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+    .card {
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 0.10rem;
+    }
+    
+    .card-header:first-child {
+        border-radius: calc(0.37rem - 1px) calc(0.37rem - 1px) 0 0
+    }
+    
+    .card-header {
+        padding: 0.75rem 1.25rem;
+        margin-bottom: 0;
+        background-color: #fff;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1)
+    }
+    
+    .track {
+        position: relative;
+        background-color: #ddd;
+        height: 7px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        margin-bottom: 60px;
+        margin-top: 50px
+    }
+    
+    .track .step {
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+        width: 25%;
+        margin-top: -18px;
+        text-align: center;
+        position: relative
+    }
+    
+    .track .step.active:before {
+        background: #FF5722
+    }
+    
+    .track .step::before {
+        height: 7px;
+        position: absolute;
+        content: "";
+        width: 100%;
+        left: 0;
+        top: 18px
+    }
+    
+    .track .step.active .icon {
+        background: #ee5435;
+        color: #fff
+    }
+    
+    .track .icon {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        position: relative;
+        border-radius: 100%;
+        background: #ddd
+    }
+    
+    .track .step.active .text {
+        font-weight: 400;
+        color: #000
+    }
+    
+    .track .text {
+        display: block;
+        margin-top: 7px
+    }
+    
+    .itemside {
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        width: 100%
+    }
+    
+    .itemside .aside {
+        position: relative;
+        -ms-flex-negative: 0;
+        flex-shrink: 0
+    }
+    
+    .img-sm {
+        width: 80px;
+        height: 80px;
+        padding: 7px
+    }
+    
+    ul.row,
+    ul.row-sm {
+        list-style: none;
+        padding: 0
+    }
+    
+    .itemside .info {
+        padding-left: 15px;
+        padding-right: 7px
+    }
+    
+    .itemside .title {
+        display: block;
+        margin-bottom: 5px;
+        color: #212529
+    }
+    
+    p {
+        margin-top: 0;
+        margin-bottom: 1rem
+    }
+    
+    .btn-warning {
+        color: #ffffff;
+        background-color: #ee5435;
+        border-color: #ee5435;
+        border-radius: 1px
+    }
+    
+    .btn-warning:hover {
+        color: #ffffff;
+        background-color: #ff2b00;
+        border-color: #ff2b00;
+        border-radius: 1px
+    }
+    
+    #MainCard {
+        margin-top: 13%;
+    }
+    /* Style for the table */
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    th,
+    td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+    
+    th {
+        background-color: #f2f2f2;
+    }
+    /* Style for the modal */
+    
+    .modal-content {
+        border-radius: 10px;
+    }
+    
+    .modal-header {
+        background-color: #81c408 !important;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+    
+    .modal-title {
+        margin: 0;
+    }
+    
+    .modal-body {
+        padding: 20px;
+    }
+    
+    .modal-footer {
+        padding: 20px;
+        justify-content: space-between;
+        border-top: none;
+    }
+    
+    .header {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    
+    .details {
+        text-align: center;
+        margin-top: -40px;
+    }
+    
+    .details p {
+        margin: 5px 0;
+    }
+    
+    .invoice-half {
+        width: 48%;
+    }
+    
+    @media screen and (max-width: 900px) {
+        #MainCard {
+            margin-top: 26%;
+        }
+        .divisiable-line {
+            margin-top: 25%;
+        }
+        #ord_id {
+            font-size: xx-small;
+        }
+    }
+</style>
+<div class="container">
+    <article class="card" id="MainCard">
+        <header class="card-header">
+            <a href="{% url 'account' %}">My Account </a>/ My Orders / Tracking </header>
+        {% if confirmed_order_items %} {% for ord_id in confirmed_order_items %}
+        <div class="card-body">
+            <div style="display: ruby-text;">
+                <a class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-orderID="{{ord_id.provider_order_id}}"><i class="fa fi-rs-download"></i></a>
+                <strong class="text-dark">Order ID:</strong>
+                <h6 class="text-primary" id="ord_id"> {% if confirmed_order_items %} {{ord_id.provider_order_id}} {% else %}OD45345345435 {% endif %}</h6>
+            </div>
+            <article class="card">
+                <div class="card-body row">
+                    <div class="col"> <strong>Estimated Delivery time:</strong> <br>{% if estimated_delivery_dates %} {{estimated_delivery_dates}}{% endif %} </div>
+                    <div class="col"> <strong>Shipping BY:</strong> <br> BLUEDART, | <i class="fi fi-rs-smartphone"></i> +1598675986 </div>
+                    <div class="col"> <strong>Status:</strong> <br> {{ord_id.delivery_status}}</div>
+                    <div class="col"> <strong>Tracking #:</strong> <br> {{ord_id.tracking_id}} </div>
+                </div>
+            </article>
+            <div class="track">
+                <div class="step {% if ord_id.delivery_status == 'Pending' %} active {% endif %}">
+                    <span class="icon"> <i class="fi fi-rs-check"></i> </span>
+                    <span class="text">Order confirmed</span>
+                </div>
+                <div class="step {% if ord_id.delivery_status == 'Picked by courier' %}active{% endif %}">
+                    <span class="icon"> <i class="fi fi-rs-user"></i> </span>
+                    <span class="text">Picked by courier</span>
+                </div>
+                <div class="step {% if ord_id.delivery_status == 'On the way' %}active{% endif %}">
+                    <span class="icon"> <i class="fi fi-rs-school-bus"></i> </span>
+                    <span class="text">On the way</span>
+                </div>
+                <div class="step {% if ord_id.delivery_status == 'Ready for pickup' %}active{% endif %}">
+                    <span class="icon"> <i class="fi fi-rs-shopping-cart-check"></i> </span>
+                    <span class="text">Ready for pickup</span>
+                </div>
+                <div class="step {% if ord_id.delivery_status == 'Delivered' %}active{% endif %}">
+                    <span class="icon"> <i class="fi fi-rs-checkbox"></i> </span>
+                    <span class="text">Delivered</span>
+                </div>
+                <div class="step {% if ord_id.delivery_status == 'Cancelled' %}active{% endif %}">
+                    <span class="icon"> <i class="fi fi-rs-delete"></i> </span>
+                    <span class="text">Cancelled</span>
+                </div>
+            </div>
+        </div>
+        <hr> {% endfor %} {% else %}
+        <div class="container" style="display: block;margin:auto;width:400px;">
+            <a class="btn btn-primary" href="{% url 'market' %}">
+                <i class="fi fi-rs-forward mx-1"></i>Shop Now</a>
+        </div>
+        {% endif %}
+
+        <div class="card-body">
+            <hr class="divisiable-line">
+            <ul class="row">
+                {% for si in sample_items %}
+                <li class="col-md-4">
+                    <a href="{% url 'itemDetail' si.id %}">
+                        <figure class="itemside mb-3">
+                            <div class="aside"><img src="{{si.image.url}}" class="img-sm border"></div>
+                            <figcaption class="info align-self-center">
+                                <p class="title">{{si.title}}</p> <span class="text-muted">   
+                        {% if si.item_types == "Fruits" %}
+                        <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
+                            style="top: -18px; left: 1px;">{{si.category}}</div>
+                        {% else %}
+                        <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
+                            style="top: -18px; left: -12px;">{{si.status}}</div>
+                        {% endif %}                                         
+                        <div class="d-flex mb-2">
+                        <h5 class="fw-bold me-2">₹ {{si.discount}}</h5>
+                        <h5 class="text-danger text-decoration-line-through">₹ {{si.price}}</h5>
+                    </div> </span>
+                            </figcaption>
+                        </figure>
+                    </a>
+                </li>
+                {% endfor %}
+
+            </ul>
+            <hr>
+            <a href="{% url 'account' %}" class="btn btn-warning" data-abc="true"> <i class="fa fa-chevron-left"></i> Back to orders</a>
+        </div>
+    </article>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-bg-primary" id="exampleModalLabel">Invoice Information</h5>
+            </div>
+            <div class="modal-body">
+                <img src="{% static 'img/invoice-demo.png' %}" alt="">
+                <div>
+                    <div class="header">
+                        <div class="details">
+                            <p>GSTIN: 29ABMPD9358D2ZC</p>
+                            <h2>Sales Quotation</h2>
+                            <p><strong>BEAUTY CENTRE</strong></p>
+                            <p>No.9, OTC ROAD, Opp ICICI Bank, Near Sharda Theatre<br> Bangalore-560002
+                                <br> Tel: 080-41238915<br> Email: contactbeautycentre@gmail.com</p>
+                        </div>
+                    </div>
+                    <table id="invoiceTable">
+                        <thead>
+                            <tr>
+                                <th colspan="2">Invoice Number: <span id="invoiceNumber"></span></th>
+                                <th colspan="2" style="text-align: right;" id="currentDate"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="2" style="width: 0%; vertical-align: top;">
+                                    <div class="invoice-half">
+                                        <b>Bill To:</b><br>
+                                        <span id="billingName"></span>,<br>
+                                        <span id="billingAddress"></span>,<br>
+                                        <span id="billingCity"></span>,<br>
+                                        <span id="billingCountry"></span>,<br>
+                                        <span id="billingPincode"></span>
+                                    </div>
+                                </td>
+                                <td colspan="2" style="width: 60%; vertical-align: top;">
+                                    <div class="invoice-half">
+                                        <b>Payment Status:</b> <span id="paymentStatus"></span><br>
+                                        <b>Order ID:</b> <span id="orderId"></span><br>
+                                        <b>Delivery Status:</b> <span id="deliveryStatus"></span><br>
+                                        <b>Tracking ID:</b> <span id="trackingId"></span><br>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Description</th>
+                                <th>Quantity</th>
+                                <th>Unit Price (₹)</th>
+                                <th>Total (₹)</th>
+                            </tr>
+                            <tbody id="orderItems">
+                                <!-- Items will be dynamically inserted here -->
+                            </tbody>
+                            <tr>
+                                <th colspan="3" style="text-align: right;">Subtotal:</th>
+                                <td id="subtotal"></td>
+                            </tr>
+                            <tr>
+                                <th colspan="3" style="text-align: right;">Tax (18%):</th>
+                                <td id="gstCharge"></td>
+                            </tr>
+                            <tr>
+                                <th colspan="3" style="text-align: right;">Shipping:</th>
+                                <td id="shipping"></td>
+                            </tr>
+                            <tr>
+                                <th colspan="3" style="text-align: right;">Total Due:</th>
+                                <td id="totalDue"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-primary" id="downloadBtn">Download</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Include jsPDF library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/polyfills.umd.js"></script>
+<script>
+    document.getElementById('currentDate').innerHTML = `Date: ${new Date().toDateString()}`;
+
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+        const invoiceTable = document.getElementById('invoiceTable');
+
+        // Initialize jsPDF
+        const doc = new jsPDF();
+
+        // Add HTML content to PDF
+        doc.html(invoiceTable, {
+            callback: function(doc) {
+                // Save the PDF with file name
+                doc.save('invoice.pdf');
+            },
+            x: 10,
+            y: 10
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        $('#exampleModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget)
+            var orderID = button.data('orderid')
+
+            $.ajax({
+                url: `/get_invoice_details/${orderID}/`, // Use the appropriate URL pattern
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $('#invoiceNumber').text(data.invoice_number)
+                    $('#billingName').text(data.billing_address.name)
+                    $('#billingAddress').text(data.billing_address.address)
+                    $('#billingCity').text(data.billing_address.city)
+                    $('#billingCountry').text(data.billing_address.country)
+                    $('#billingPincode').text(data.billing_address.pincode)
+                    $('#paymentStatus').text(data.payment_status)
+                    $('#orderId').text(data.order_id)
+                    $('#deliveryStatus').text(data.delivery_status)
+                    $('#trackingId').text(data.tracking_id)
+
+                    var orderItems = data.items.map(function(item) {
+                        return `
+                            <tr>
+                                <td>${item.title}</td>
+                                <td>${item.quantity}</td>
+                                <td>${item.unit_price}</td>
+                                <td>${item.total.toFixed(2)}</td>
+                            </tr>
+                        `;
+                    }).join('');
+                    $('#orderItems').html(orderItems)
+                    $('#subtotal').text(data.subtotal.toFixed(2))
+                    $('#gstCharge').text(data.gst_charge.toFixed(2))
+                    $('#shipping').text(data.shipping.toFixed(2))
+                    $('#totalDue').text(data.total_due.toFixed(2))
+                }
+            });
+        });
+    });
+</script>
+
+
+{% endblock %}

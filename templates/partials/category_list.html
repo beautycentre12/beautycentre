@@ -1,0 +1,14 @@
+{% for category in categories %}
+<li>
+    <a href="{% url 'subcategory_detail' category.id %}">{{ category.title }}<i class="fi-rs-angle-down"></i></a>
+    <ul class="sub-menu">
+        {% for subcategory in category.subcategories.all %}
+        <li>
+            <a href="{% url 'subcategory_detail' category.id %}">{{ subcategory.title }}</a>
+        </li>
+        {% empty %}
+        <li>No subcategories available</li>
+        {% endfor %}
+    </ul>
+</li>
+{% endfor %}

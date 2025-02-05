@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ category.title }}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>{{ category.title }}</h1>
+    <img src="{{ category.image.url }}" alt="{{ category.title }}">
+    <h2>Products in this Category</h2>
+    <div class="products">
+        {% for product in products %}
+            <div class="product">
+                <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                <h3>{{ product.title }}</h3>
+                <p>{{ product.description|safe }}</p>
+                <p>Price: {{ product.price }}</p>
+            </div>
+        {% endfor %}
+    </div>
+    <a href="{% url 'home' %}">Back to Home</a>
+</body>
+</html>

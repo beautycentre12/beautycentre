@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bank Transfer</title>
+</head>
+
+<body>
+    <h1>Bank Transfer Details</h1>
+    <p>{{ bank_transfer_details }}</p>
+    <p>Order ID: {{ order.id }}</p>
+    <img src="{% static 'assets/imgs/theme/icons/qr_scanner.jpeg' %}" width="250" alt="QR Code">
+
+    <form method="post" action="{% url 'confirm_bank_transfer' %}">
+        {% csrf_token %}
+        <label for="utr_number">Enter UTR Number:</label>
+        <input type="text" name="utr_number" id="utr_number" required>
+        <input type="hidden" name="order_id" value="{{ order.id }}">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+
+</html>
